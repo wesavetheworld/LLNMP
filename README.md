@@ -2,5 +2,10 @@ LLNMP
 =====
 
 (Open)LiteSpeed + Nginx/Tengine + MySQL/MariaDB + PHP
-Home: http://llnmp.com
-Blog: http://shuang.ca
+
+OS: CentOS, Debian, Ubuntu
+
+    ./install.sh
+
+Home: [http://llnmp.com](http://llnmp.com)  
+Blog: [http://shuang.ca](http://shuang.ca)

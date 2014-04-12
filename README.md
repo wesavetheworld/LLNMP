@@ -9,5 +9,5 @@ LLNMP一键安装脚本
 
     ./install.sh
 
-主页: [http://llnmp.com](http://llnmp.com)
+主页: [http://llnmp.com](http://llnmp.com)  
 博客: [http://shuang.ca](http://shuang.ca)

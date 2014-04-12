@@ -8,6 +8,8 @@
 # Created: 2014-02-07
 # Updated: 2014-03-31
 # Changed: 安装选项调整, 模块化安装
+# Updated: 2014-04-12
+# Changed: 更新LiteSpeed到4.2.9版本
 
 #define var
 VERSION="0.4"
@@ -59,22 +61,22 @@ if [ -f /etc/redhat-release ]; then
         webecho="LiteSpeed 4.2.7Std"
     else
         echo "Please select a web server:"
-        echo -e "\t\033[32m1\033[0m. Install LiteSpeed 4.2.7Std"
+        echo -e "\t\033[32m1\033[0m. Install LiteSpeed 4.2.9Std"
         echo -e "\t\033[32m2\033[0m. Install OpenLiteSpeed 1.3"
-        read -p "(Default LiteSpeed 4.2.7Std): " web_select
+        read -p "(Default LiteSpeed 4.2.9Std): " web_select
 
         if [ "$web_select" != 1 -a "$web_select" != 2 ]; then
             web_select=1
         fi
 
-        [ "$web_select" == 1 ] && webecho="LiteSpeed 4.2.7Std"
+        [ "$web_select" == 1 ] && webecho="LiteSpeed 4.2.9Std"
         [ "$web_select" == 2 ] && webecho="OpenLiteSpeed 1.3"
 
         echo -e "\033[32m$webecho already installed!\033[0m"
     fi
 else
     echo "Please select a web server:"
-    echo -e "\t\033[32m1\033[0m. Install LiteSpeed 4.2.7Std"
+    echo -e "\t\033[32m1\033[0m. Install LiteSpeed 4.2.9Std"
     echo -e "\t\033[32m2\033[0m. Install OpenLiteSpeed 1.3"
     read -p "(Default LiteSpeed 4.2.7Std): " web_select
 
@@ -82,7 +84,7 @@ else
         web_select=1
     fi
 
-    [ "$web_select" == 1 ] && webecho="LiteSpeed 4.2.7Std"
+    [ "$web_select" == 1 ] && webecho="LiteSpeed 4.2.9Std"
     [ "$web_select" == 2 ] && webecho="OpenLiteSpeed 1.3"
 
     echo -e "\033[32m$webecho already installed!\033[0m"

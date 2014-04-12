@@ -73,3 +73,5 @@ if [ -f "/usr/local/lsws/lsphp5/lib/php/extensions/`ls /usr/local/lsws/lsphp5/li
     [ ! -z "`cat /usr/local/lsws/lsphp5/lib/php.ini | grep '^extension_dir'`" ] && sed -i "s@extension_dir = \".*\"@extension_dir = \"/usr/local/lsws/lsphp5/lib/php/extensions/`ls /usr/local/lsws/lsphp5/lib/php/extensions/`\"@" /usr/local/lsws/lsphp5/lib/php.ini
     sed -i 's@^extension_dir\(.*\)@extension_dir\1\nextension = "memcached.so"@' /usr/local/lsws/lsphp5/lib/php.ini
 fi
+
+cp $PWD_DIR/conf/memcached.php /home/wwwroot/default

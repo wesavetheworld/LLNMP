@@ -6,6 +6,8 @@
 #
 # Version: Ver 0.4
 # Created: 2014-03-31
+# Updated: 2014-04-13
+# Changed: 增加opcache.php
 
 [ ! -s $SRC_DIR/zendopcache-7.0.3.tgz ] && wget -c $GET_URI/zendopcache/zendopcache-7.0.3.tgz -O $SRC_DIR/zendopcache-7.0.3.tgz
 
@@ -28,3 +30,5 @@ opcache.fast_shutdown=1
 opcache.enable_cli=1
 opcache.optimization_level=0
 EOF
+
+cp $PWD_DIR/conf/opcache.php /home/wwwroot/default

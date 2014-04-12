@@ -6,6 +6,8 @@
 #
 # Version: Ver 0.4
 # Created: 2014-03-31
+# Updated: 2014-04-13
+# Changed: 增加apcu.php
 
 [ ! -s $SRC_DIR/apcu-4.0.4.tgz ] && wget -c $GET_URI/apcu/apcu-4.0.4.tgz -O $SRC_DIR/apcu-4.0.4.tgz
 
@@ -24,3 +26,5 @@ apc.shm_size = 32M
 apc.ttl = 7200
 apc.enable_cli = 1
 EOF
+
+cp apc.php /home/wwwroot/default

@@ -6,6 +6,8 @@
 #
 # Version: Ver 0.4
 # Created: 2014-03-31
+# Updated: 2014-04-13
+# Changed: 增加eaccelerator.php
 
 [ ! -s $SRC_DIR/eaccelerator-eaccelerator-42067ac.tar.gz ] && wget -c $GET_URI/eaccelerator/eaccelerator-eaccelerator-42067ac.tar.gz -O $SRC_DIR/eaccelerator-eaccelerator-42067ac.tar.gz
 
@@ -42,3 +44,5 @@ EOF
 
 echo 'kernel.shmmax = 67108864' >> /etc/sysctl.conf
 sysctl -p
+
+cp $PWD_DIR/conf/eaccelerator.php /home/wwwroot/default

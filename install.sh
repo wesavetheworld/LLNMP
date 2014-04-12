@@ -10,6 +10,8 @@
 # Changed: 安装选项调整, 模块化安装
 # Updated: 2014-04-12
 # Changed: 更新LiteSpeed到4.2.9版本
+# Updated: 2014-04-13
+# Changed: 更新缓存组件选择
 
 #define var
 VERSION="0.4"
@@ -58,7 +60,7 @@ done
 if [ -f /etc/redhat-release ]; then
     centosversion=$(cat /etc/redhat-release | grep -o [0-9] | sed 1q)
     if [ "$centosversion" == "5" ]; then
-        webecho="LiteSpeed 4.2.7Std"
+        webecho="LiteSpeed 4.2.9Std"
     else
         echo "Please select a web server:"
         echo -e "\t\033[32m1\033[0m. Install LiteSpeed 4.2.9Std"
@@ -186,12 +188,20 @@ if [ "$cache_install" == "y" ]; then
     echo "Please select a opcode cache of the PHP:"
     echo -e "\t\033[32m1\033[0m. Install eAccelerator 1.0-dev"
     echo -e "\t\033[32m2\033[0m. Install XCache 3.1.0"
-    [ "$php_select" != 1 ] && echo -e "\t\033[32m3\033[0m. Install Zend Opcache 7.0.3"
+    echo -e "\t\033[32m3\033[0m. Install Zend Opcache 7.0.3"
     echo -e "\t\033[32m4\033[0m. Install APCU 4.0.4"
     read -p "Please input a number 1,2,3,4(Default 1): " cache_select
 
     if [ "$cache_select" != 1 -a "$cache_select" != 2 -a "$cache_select" != 3 -a "$cache_select" != 4 ]; then
         cache_select=1
+    fi
+
+    if [ "$cache_select" == '2' ]; then
+        while :
+        do
+            read -p "Please input xcache admin password: " xcachepass
+            (( ${#xcachepass} >= 5 )) && xcachepass=`echo -n "$xcachepass" | md5sum | awk '{print $1}'` && break || echo -e "\033[31mxcache admin password least 5 characters!\033[0m"
+        done
     fi
 
     [ "$cache_select" == 1 ] && echo -e "\033[32meAccelerator 1.0-dev already installed!\033[0m"

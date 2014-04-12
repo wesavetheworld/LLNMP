@@ -8,6 +8,8 @@
 # Created: 2014-03-31
 # Updated: 2014-04-01
 # Changed: 修复无法添加到php.ini问题
+# Updated: 2014-04-13
+# Changed: 增加redis.php
 
 [ ! -s $SRC_DIR/redis-2.8.8.tar.gz ] && wget -c $GET_URI/redis/redis-2.8.8.tar.gz -O $SRC_DIR/redis-2.8.8.tar.gz
 
@@ -69,3 +71,5 @@ chkconfig --add redis
 chkconfig redis on
 
 service redis start
+
+cp $PWD_DIR/conf/redis.php /home/wwwroot/default

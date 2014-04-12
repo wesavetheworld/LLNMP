@@ -8,15 +8,17 @@
 # Created: 2014-03-31
 # Updated: 2014-04-03
 # Changed: 修复安装时无法继续问题
+# Updated: 2014-04-12
+# Changed: 更新LiteSpeed为4.2.9版本
 
 useradd -M -s /sbin/nologin www
 mkdir -p /home/wwwroot/default
 
-[ ! -s $SRC_DIR/lsws-4.2.8-std-i386-linux.tar.gz ] && wget -c $GET_URI/litespeed/lsws-4.2.8-std-i386-linux.tar.gz -O $SRC_DIR/lsws-4.2.8-std-i386-linux.tar.gz
+[ ! -s $SRC_DIR/lsws-4.2.9-std-i386-linux.tar.gz ] && wget -c $GET_URI/litespeed/lsws-4.2.9-std-i386-linux.tar.gz -O $SRC_DIR/lsws-4.2.9-std-i386-linux.tar.gz
 
 cd $SRC_DIR
-tar zxf lsws-4.2.8-std-i386-linux.tar.gz
-cd lsws-4.2.8
+tar zxf lsws-4.2.9-std-i386-linux.tar.gz
+cd lsws-4.2.9
 rm -f LICENSE
 
 expect -c "

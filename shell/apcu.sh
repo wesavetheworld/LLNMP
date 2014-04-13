@@ -27,4 +27,4 @@ apc.ttl = 7200
 apc.enable_cli = 1
 EOF
 
-cp apc.php /home/wwwroot/default
+cp apc.php /home/wwwroot/default/apcu.php

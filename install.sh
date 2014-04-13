@@ -11,7 +11,7 @@
 # Updated: 2014-04-12
 # Changed: 更新LiteSpeed到4.2.9版本
 # Updated: 2014-04-13
-# Changed: 更新缓存组件选择
+# Changed: 更新缓存组件选择, 去除eAccelerator
 
 #define var
 VERSION="0.4"
@@ -186,17 +186,16 @@ fi
 
 if [ "$cache_install" == "y" ]; then
     echo "Please select a opcode cache of the PHP:"
-    echo -e "\t\033[32m1\033[0m. Install eAccelerator 1.0-dev"
-    echo -e "\t\033[32m2\033[0m. Install XCache 3.1.0"
-    echo -e "\t\033[32m3\033[0m. Install Zend Opcache 7.0.3"
-    echo -e "\t\033[32m4\033[0m. Install APCU 4.0.4"
-    read -p "Please input a number 1,2,3,4(Default 1): " cache_select
+    echo -e "\t\033[32m1\033[0m. Install Zend Opcache 7.0.3"
+    echo -e "\t\033[32m2\033[0m. Install APCU 4.0.4"
+    echo -e "\t\033[32m3\033[0m. Install XCache 3.1.0"
+    read -p "Please input a number 1,2,3(Default 1): " cache_select
 
-    if [ "$cache_select" != 1 -a "$cache_select" != 2 -a "$cache_select" != 3 -a "$cache_select" != 4 ]; then
+    if [ "$cache_select" != 1 -a "$cache_select" != 2 -a "$cache_select" != 3 ]; then
         cache_select=1
     fi
 
-    if [ "$cache_select" == '2' ]; then
+    if [ "$cache_select" == '3' ]; then
         while :
         do
             read -p "Please input xcache admin password: " xcachepass
@@ -204,10 +203,9 @@ if [ "$cache_install" == "y" ]; then
         done
     fi
 
-    [ "$cache_select" == 1 ] && echo -e "\033[32meAccelerator 1.0-dev already installed!\033[0m"
-    [ "$cache_select" == 2 ] && echo -e "\033[32mXCache 3.1.0 already installed!\033[0m"
-    [ "$cache_select" == 3 ] && echo -e "\033[32mZend Opcache 7.0.3 already installed!\033[0m"
-    [ "$cache_select" == 4 ] && echo -e "\033[32mAPCU 4.0.4 already installed!\033[0m"
+    [ "$cache_select" == 1 ] && echo -e "\033[32mZend Opcache 7.0.3 already installed!\033[0m"
+    [ "$cache_select" == 2 ] && echo -e "\033[32mAPCU 4.0.4 already installed!\033[0m"
+    [ "$cache_select" == 3 ] && echo -e "\033[32mXCache 3.1.0 already installed!\033[0m"
 
     [ "$php_select" == 1 ] && zendecho="Zend Optimizer" || zendecho="Zend GuardLoader"
     read -p "Do you want install $zendecho?(Default y)[y/n]: " zend_install
@@ -319,11 +317,8 @@ fi
 
 #nginx
 if [ "$nginx_install" == "y" ]; then
-    if [ "$nginx_select" == 2 ]; then
-        . $SH_DIR/tengine.sh 2>&1 | tee -a $LOG_FILE
-    else
-        . $SH_DIR/nginx.sh 2>&1 | tee -a $LOG_FILE
-    fi
+    [ "$nginx_select" == 1 ] && . $SH_DIR/nginx.sh 2>&1 | tee -a $LOG_FILE
+    [ "$nginx_select" == 2 ] && . $SH_DIR/tengine.sh 2>&1 | tee -a $LOG_FILE
 fi
 
 #php
@@ -349,15 +344,9 @@ fi
 
 #cache
 if [ "$cache_install" == "y" ]; then
-    if [ "$cache_select" == 4 ]; then
-        . $SH_DIR/apcu.sh 2>&1 | tee -a $LOG_FILE
-    elif [ "$cache_select" == 3 ]; then
-        . $SH_DIR/zendopcache.sh 2>&1 | tee -a $LOG_FILE
-    elif [ "$cache_select" == 2 ]; then
-        . $SH_DIR/xcache.sh 2>&1 | tee -a $LOG_FILE
-    else
-        . $SH_DIR/eaccelerator.sh 2>&1 | tee -a $LOG_FILE
-    fi
+    [ "$cache_select" == 1 ] && . $SH_DIR/zendopcache.sh 2>&1 | tee -a $LOG_FILE
+    [ "$cache_select" == 2 ] && . $SH_DIR/apcu.sh 2>&1 | tee -a $LOG_FILE
+    [ "$cache_select" == 3 ] && . $SH_DIR/xcache.sh 2>&1 | tee -a $LOG_FILE
 fi
 
 #zend

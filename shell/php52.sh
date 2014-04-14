@@ -8,6 +8,8 @@
 # Created: 2014-03-31
 # Updated: 2014-04-05
 # Changed: 修复安装后无法登陆LiteSpeed后台问题
+# Updated: 2014-04-13
+# Changed: 修复安装出错问题, 将make clean移到前面
 
 [ ! -s $SRC_DIR/php-5.2.17.tar.gz ] && wget -c $GET_URI/php/php-5.2.17.tar.gz -O $SRC_DIR/php-5.2.17.tar.gz
 
@@ -24,6 +26,7 @@ mv $SRC_DIR/litespeed $SRC_DIR/php-5.2.17/sapi/litespeed/
 mv $SRC_DIR/php-5.2.17 /usr/local/lsws/phpbuild
 cd /usr/local/lsws/phpbuild/php-5.2.17
 
+make clean
 touch ac*
 rm -rf autom4te.*
 export PHP_AUTOCONF=/usr/bin/autoconf-2.13
@@ -37,7 +40,7 @@ else
     ln -s /usr/local/mysql/lib/libmysqlclient.so.18  /usr/lib/
     ./configure '--disable-fileinfo' '--prefix=/usr/local/lsws/lsphp5' '--with-pdo-mysql=/usr/local/mysql/bin/mysql_config' '--with-mysql=/usr/local/mysql' '--with-mysqli=/usr/local/mysql/bin/mysql_config' '--with-zlib' '--with-gd' '--enable-shmop' '--enable-exif' '--enable-sockets' '--enable-sysvsem' '--enable-sysvshm' '--enable-magic-quotes' '--enable-mbstring' '--with-iconv' '--with-curl' '--with-curlwrappers' '--with-mcrypt' '--with-mhash' '--with-openssl' '--with-freetype-dir=/usr/lib' '--with-jpeg-dir=/usr/lib' '--with-png-dir' '--with-libxml-dir=/usr' '--enable-xml' '--disable-rpath' '--enable-bcmath' '--enable-mbregex' '--enable-gd-native-ttf' '--enable-pcntl' '--with-ldap' '--with-ldap-sasl' '--with-xmlrpc' '--enable-zip' '--enable-inline-optimization' '--enable-soap' '--disable-ipv6' '--enable-ftp' '--disable-debug' '--with-gettext' '--with-litespeed'
 fi
-make clean
+
 make -j $cpu_num
 make -k install
 

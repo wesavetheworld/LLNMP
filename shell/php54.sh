@@ -8,20 +8,19 @@
 # Created: 2014-03-31
 # Updated: 2014-04-08
 # Changed: 修复安装出现sapi/cli/php错误问题
+# Updated: 2014-04-13
+# Changed: 修复安装出错问题, 去除php-litespeed, 将make clean移到前面
 
 [ ! -s $SRC_DIR/php-5.4.26.tar.gz ] && wget -c $GET_URI/php/php-5.4.26.tar.gz -O $SRC_DIR/php-5.4.26.tar.gz
-
-[ ! -s $SRC_DIR/php-litespeed-6.6.tgz ]&& wget -c $GET_URI/php-litespeed/php-litespeed-6.6.tgz -O $SRC_DIR/php-litespeed-6.6.tgz
 
 [ ! -s /usr/local/lsws/phpbuild ] && mkdir -p /usr/local/lsws/phpbuild
 
 cd $SRC_DIR
-tar zxf php-litespeed-6.6.tgz
 tar zxf php-5.4.26.tar.gz
-mv $SRC_DIR/litespeed $SRC_DIR/php-5.4.26/sapi/litespeed/
 mv $SRC_DIR/php-5.4.26 /usr/local/lsws/phpbuild
 cd /usr/local/lsws/phpbuild/php-5.4.26
 
+make clean
 touch ac*
 rm -rf autom4te.*
 
@@ -41,7 +40,6 @@ if [ "x$PLF" = "xx86_64" ] ; then
     fi
 fi
 
-make clean
 make -j $cpu_num
 make -k install
 

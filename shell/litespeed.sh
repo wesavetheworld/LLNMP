@@ -10,6 +10,8 @@
 # Changed: 修复安装时无法继续问题
 # Updated: 2014-04-12
 # Changed: 更新LiteSpeed为4.2.9版本
+# Updated: 2014-04-13
+# Changed: 更改端口设定方式
 
 useradd -M -s /sbin/nologin www
 mkdir -p /home/wwwroot/default
@@ -20,6 +22,7 @@ cd $SRC_DIR
 tar zxf lsws-4.2.9-std-i386-linux.tar.gz
 cd lsws-4.2.9
 rm -f LICENSE
+[ "$nginx_install" == "y" ] && port=8088 || port=80
 
 expect -c "
 spawn ./install.sh

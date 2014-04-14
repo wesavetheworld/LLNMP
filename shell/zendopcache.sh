@@ -8,12 +8,14 @@
 # Created: 2014-03-31
 # Updated: 2014-04-13
 # Changed: 增加opcache.php
+# Updated: 2014-04-14
+# Changed: 更新安装版本为最新版本, 否则与Zend Optimizer有可能会有冲突
 
-[ ! -s $SRC_DIR/zendopcache-7.0.3.tgz ] && wget -c $GET_URI/zendopcache/zendopcache-7.0.3.tgz -O $SRC_DIR/zendopcache-7.0.3.tgz
+[ ! -s $SRC_DIR/ZendOptimizerPlus-master.zip ] && wget -c --no-check-certificate https://github.com/zendtech/ZendOptimizerPlus/archive/master.zip -O $SRC_DIR/ZendOptimizerPlus-master.zip
 
 cd $SRC_DIR
-tar zxf zendopcache-7.0.3.tgz
-cd zendopcache-7.0.3
+unzip ZendOptimizerPlus-master.zip
+cd ZendOptimizerPlus-master
 /usr/local/lsws/lsphp5/bin/phpize
 ./configure --with-php-config=/usr/local/lsws/lsphp5/bin/php-config
 make -j $cpu_num && make install

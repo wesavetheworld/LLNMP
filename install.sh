@@ -131,9 +131,6 @@ if [ "$nginx_install" == "y" ]; then
     [ "$nginx_select" == 2 ] && nginxecho="Tengine 2.0.2"
 
     echo -e "\033[32m$nginxecho already installed!\033[0m"
-    port=8088
-elif [ "$nginx_install" == "n" ]; then
-    port=80
 fi
 
 #select database server

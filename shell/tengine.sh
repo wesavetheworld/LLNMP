@@ -6,10 +6,16 @@
 #
 # Version: Ver 0.4
 # Created: 2014-03-31
+# Updated: 2014-04-13
+# Changed: 修复访问传回后端端口问题
+# Updated: 2014-04-14
+# Changed: 修正LiteSpeed无法获取真实IP问题
 
 [ "$jemalloc_install" == "y" ] && COMMAND="--with-ld-opt='-ljemalloc'"
 
 [ ! -s $SRC_DIR/tengine-2.0.2.tar.gz ] && wget -c $GET_URI/tengine/tengine-2.0.2.tar.gz -O $SRC_DIR/tengine-2.0.2.tar.gz
+
+sed -i 's/<autoUpdateInterval>/<useIpInProxyHeader>1<\/useIpInProxyHeader>\n    &/' /usr/local/lsws/conf/httpd_config.xml
 
 cd $SRC_DIR
 tar zxf tengine-2.0.2.tar.gz
@@ -93,7 +99,7 @@ proxy_read_timeout 900;
 proxy_buffer_size 32k;
 proxy_buffers 4 32k;
 proxy_busy_buffers_size 64k;
-proxy_redirect http://127.0.0.1:8088/ /;
+proxy_redirect http://\$host:8088/ http://\$host/;
 proxy_hide_header Vary;
 proxy_set_header Accept-Encoding '';
 proxy_set_header Host \$host;

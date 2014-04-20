@@ -8,6 +8,8 @@
 # Created: 2014-03-31
 # Updated: 2014-04-13
 # Changed: 更新缓存组件链接, 去除eAccelerator
+# Updated: 2014-04-18
+# Changed: 更新phpmyadmin版本到4.1.13
 
 cp $PWD_DIR/conf/p.php /home/wwwroot/default/p.php
 cp $PWD_DIR/conf/llnmp.jpg /home/wwwroot/default/llnmp.jpg
@@ -25,19 +27,10 @@ cp $PWD_DIR/conf/index.html /home/wwwroot/default/index.html
 sed -i "s/{ip}/$IP/g" /home/wwwroot/default/index.html
 
 
-if [ "$php_select" == 1 ]; then
-    [ ! -s $SRC_DIR/phpMyAdmin-3.4.8-all-languages.tar.gz ] && wget -c $GET_URI/phpmyadmin/phpMyAdmin-3.4.8-all-languages.tar.gz -O $SRC_DIR/phpMyAdmin-3.4.8-all-languages.tar.gz
+[ ! -s $SRC_DIR/phpMyAdmin-4.1.13-all-languages.tar.gz ] && wget -c $GET_URI/phpmyadmin/phpMyAdmin-4.1.13-all-languages.tar.gz -O $SRC_DIR/phpMyAdmin-4.1.13-all-languages.tar.gz
 
-    cd $SRC_DIR
-    tar zxf phpMyAdmin-3.4.8-all-languages.tar.gz
-    mv phpMyAdmin-3.4.8-all-languages /home/wwwroot/default/phpmyadmin/
-
-else    
-    [ ! -s $SRC_DIR/phpMyAdmin-4.1.12-all-languages.tar.gz ] && wget -c $GET_URI/phpmyadmin/phpMyAdmin-4.1.12-all-languages.tar.gz -O $SRC_DIR/phpMyAdmin-4.1.12-all-languages.tar.gz
-
-    cd $SRC_DIR
-    tar zxf phpMyAdmin-4.1.12-all-languages.tar.gz
-    mv phpMyAdmin-4.1.12-all-languages /home/wwwroot/default/phpmyadmin/
-fi
+cd $SRC_DIR
+tar zxf phpMyAdmin-4.1.13-all-languages.tar.gz
+mv phpMyAdmin-4.1.13-all-languages /home/wwwroot/default/phpmyadmin/
 
 chown -R www:www /home/wwwroot/

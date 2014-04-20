@@ -10,6 +10,8 @@
 # Changed: 修复访问传回后端端口问题
 # Updated: 2014-04-14
 # Changed: 修正LiteSpeed无法获取真实IP问题
+# Updated: 2014-04-15
+# Changed: 修复CentOS 5升级OpenSSL 1.0.1后无法安装Tengine问题
 
 [ "$jemalloc_install" == "y" ] && COMMAND="--with-ld-opt='-ljemalloc'"
 
@@ -25,7 +27,9 @@ sed -i 's@CFLAGS="$CFLAGS -g"@#CFLAGS="$CFLAGS -g"@' auto/cc/gcc
 
 ./configure --user=www --group=www --prefix=/usr/local/nginx --with-http_stub_status_module --with-http_ssl_module --with-http_gzip_static_module --with-http_concat_module=shared $COMMAND
 
-make -j $cpu_num && make install
+[ "$openssl_install" == "y" ] && make || make -j $cpu_num
+
+make install
 
 mkdir -p /home/wwwlogs/nginx /usr/local/nginx/conf/vhost
 rm -f /usr/local/nginx/conf/nginx.conf

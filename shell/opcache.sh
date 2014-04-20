@@ -10,6 +10,8 @@
 # Changed: 增加opcache.php
 # Updated: 2014-04-14
 # Changed: 更新安装版本为最新版本, 否则与Zend Optimizer有可能会有冲突
+# Updated: 2014-04-19
+# Changed: 更改文件名为opcache.sh
 
 [ ! -s $SRC_DIR/ZendOptimizerPlus-master.zip ] && wget -c --no-check-certificate https://github.com/zendtech/ZendOptimizerPlus/archive/master.zip -O $SRC_DIR/ZendOptimizerPlus-master.zip
 

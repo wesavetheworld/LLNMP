@@ -8,15 +8,16 @@
 # Created: 2014-03-31
 # Updated: 2014-04-13
 # Changed: 修复安装出错问题, 去除php-litespeed, 将make clean移到前面
+# Updated: 更新php版本到5.5.11
 
-[ ! -s $SRC_DIR/php-5.5.10.tar.gz ] && wget -c $GET_URI/php/php-5.5.10.tar.gz -O $SRC_DIR/php-5.5.10.tar.gz
+[ ! -s $SRC_DIR/php-5.5.11.tar.gz ] && wget -c $GET_URI/php/php-5.5.11.tar.gz -O $SRC_DIR/php-5.5.11.tar.gz
 
 [ ! -s /usr/local/lsws/phpbuild ] && mkdir -p /usr/local/lsws/phpbuild
 
 cd $SRC_DIR
-tar zxf php-5.5.10.tar.gz
-mv $SRC_DIR/php-5.5.10 /usr/local/lsws/phpbuild
-cd /usr/local/lsws/phpbuild/php-5.5.10
+tar zxf php-5.5.11.tar.gz
+mv $SRC_DIR/php-5.5.11 /usr/local/lsws/phpbuild
+cd /usr/local/lsws/phpbuild/php-5.5.11
 
 make clean
 touch ac*
@@ -45,17 +46,17 @@ make -k install
 
 [ ! -s /usr/local/lsws/lsphp5/lib ] && mkdir -p /usr/local/lsws/lsphp5/lib
 
-yes | cp -rf /usr/local/lsws/phpbuild/php-5.5.10/php.ini-production /usr/local/lsws/lsphp5/lib/php.ini
+yes | cp -rf /usr/local/lsws/phpbuild/php-5.5.11/php.ini-production /usr/local/lsws/lsphp5/lib/php.ini
 
 cd /usr/local/lsws/fcgi-bin
 
-[ -e "lsphp-5.5.10" ] && mv -s lsphp-5.5.10 lsphp-5.5.10.bak
+[ -e "lsphp-5.5.11" ] && mv -s lsphp-5.5.11 lsphp-5.5.11.bak
 
-cp /usr/local/lsws/phpbuild/php-5.5.10/sapi/litespeed/php lsphp-5.5.10
-ln -sf lsphp-5.5.10 lsphp5
-ln -sf lsphp-5.5.10 lsphp55
-chmod a+x lsphp-5.5.10
-chown -R lsadm:lsadm /usr/local/lsws/phpbuild/php-5.5.10
+cp /usr/local/lsws/phpbuild/php-5.5.11/sapi/litespeed/php lsphp-5.5.11
+ln -sf lsphp-5.5.11 lsphp5
+ln -sf lsphp-5.5.11 lsphp55
+chmod a+x lsphp-5.5.11
+chown -R lsadm:lsadm /usr/local/lsws/phpbuild/php-5.5.11
 
 sed -i 's/post_max_size = 8M/post_max_size = 50M/g' /usr/local/lsws/lsphp5/lib/php.ini
 sed -i 's/short_open_tag = Off/short_open_tag = On/g' /usr/local/lsws/lsphp5/lib/php.ini

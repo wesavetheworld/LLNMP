@@ -6,6 +6,8 @@
 #
 # Version: Ver 0.4
 # Created: 2014-03-31
+# Updated: 2014-04-18
+# Changed: 更新mariadb版本到5.5.37
 
 useradd -M -s /sbin/nologin mysql
 rm -f /etc/my.cnf
@@ -13,11 +15,11 @@ mkdir -p /data/mysql
 
 [ "$jemalloc_install" == "y" ] && COMMAND="-DCMAKE_EXE_LINKER_FLAGS='-ljemalloc'"
 
-[ ! -f $SRC_DIR/mariadb-5.5.36.tar.gz ] && wget -c $GET_URI/mariadb/mariadb-5.5.36.tar.gz -O $SRC_DIR/mariadb-5.5.36.tar.gz
+[ ! -f $SRC_DIR/mariadb-5.5.37.tar.gz ] && wget -c $GET_URI/mariadb/mariadb-5.5.37.tar.gz -O $SRC_DIR/mariadb-5.5.37.tar.gz
 
 cd $SRC_DIR
-tar zxf mariadb-5.5.36.tar.gz
-cd mariadb-5.5.36
+tar zxf mariadb-5.5.37.tar.gz
+cd mariadb-5.5.37
 cmake -DCMAKE_INSTALL_PREFIX=/usr/local/mysql \
 -DMYSQL_DATADIR=/data/mysql \
 -DWITH_ARIA_STORAGE_ENGINE=1 \

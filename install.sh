@@ -12,6 +12,12 @@
 # Changed: 更新LiteSpeed到4.2.9版本
 # Updated: 2014-04-13
 # Changed: 更新缓存组件选择, 去除eAccelerator
+# Updated: 2014-04-14
+# Changed: 解决CentOS 5无法安装OpenLiteSpeed问题
+# Updated: 2014-04-15
+# Changed: 修复CentOS 5下安装OpenLiteSpeed问题
+# Updated: 2014-04-19
+# Changed: 修改Zend Opcache文件名为opcache.sh, 更正openssl升级条件
 
 #define var
 VERSION="0.4"
@@ -58,24 +64,19 @@ done
 
 #select web server
 if [ -f /etc/redhat-release ]; then
-    centosversion=$(cat /etc/redhat-release | grep -o [0-9] | sed 1q)
-    if [ "$centosversion" == "5" ]; then
-        webecho="LiteSpeed 4.2.9Std"
-    else
-        echo "Please select a web server:"
-        echo -e "\t\033[32m1\033[0m. Install LiteSpeed 4.2.9Std"
-        echo -e "\t\033[32m2\033[0m. Install OpenLiteSpeed 1.3"
-        read -p "(Default LiteSpeed 4.2.9Std): " web_select
+    echo "Please select a web server:"
+    echo -e "\t\033[32m1\033[0m. Install LiteSpeed 4.2.9Std"
+    echo -e "\t\033[32m2\033[0m. Install OpenLiteSpeed 1.3"
+    read -p "(Default LiteSpeed 4.2.9Std): " web_select
 
-        if [ "$web_select" != 1 -a "$web_select" != 2 ]; then
-            web_select=1
-        fi
-
-        [ "$web_select" == 1 ] && webecho="LiteSpeed 4.2.9Std"
-        [ "$web_select" == 2 ] && webecho="OpenLiteSpeed 1.3"
-
-        echo -e "\033[32m$webecho already installed!\033[0m"
+    if [ "$web_select" != 1 -a "$web_select" != 2 ]; then
+        web_select=1
     fi
+
+    [ "$web_select" == 1 ] && webecho="LiteSpeed 4.2.9Std"
+    [ "$web_select" == 2 ] && webecho="OpenLiteSpeed 1.3"
+
+    echo -e "\033[32m$webecho already installed!\033[0m"
 else
     echo "Please select a web server:"
     echo -e "\t\033[32m1\033[0m. Install LiteSpeed 4.2.9Std"
@@ -157,20 +158,18 @@ echo -e "\033[32m$dbecho root password: $dbpass\033[0m"
 
 #select php version
 echo "Please select a PHP Version:"
-echo -e "\t\033[32m1\033[0m. Install PHP 5.2.17"
-echo -e "\t\033[32m2\033[0m. Install PHP 5.3.28"
-echo -e "\t\033[32m3\033[0m. Install PHP 5.4.26"
-echo -e "\t\033[32m4\033[0m. Install PHP 5.5.10"
+echo -e "\t\033[32m1\033[0m. Install PHP 5.3.28"
+echo -e "\t\033[32m2\033[0m. Install PHP 5.4.26"
+echo -e "\t\033[32m3\033[0m. Install PHP 5.5.10"
 read -p "(Default PHP 5.3.28): " php_select
 
-if [ "$php_select" != 1 -a "$php_select" != 2 -a "$php_select" != 3 -a "$php_select" != 4 ]; then
-    php_select=2
+if [ "$php_select" != 1 -a "$php_select" != 2 -a "$php_select" != 3 ]; then
+    php_select=1
 fi
 
-[ "$php_select" == 1 ] && phpecho="PHP 5.2.17"
-[ "$php_select" == 2 ] && phpecho="PHP 5.3.28"
-[ "$php_select" == 3 ] && phpecho="PHP 5.4.26"
-[ "$php_select" == 4 ] && phpecho="PHP 5.5.10"
+[ "$php_select" == 1 ] && phpecho="PHP 5.3.28"
+[ "$php_select" == 2 ] && phpecho="PHP 5.4.26"
+[ "$php_select" == 3 ] && phpecho="PHP 5.5.10"
 
 echo -e "\033[32m$phpecho already installed!\033[0m"
 
@@ -204,14 +203,15 @@ if [ "$cache_install" == "y" ]; then
     [ "$cache_select" == 2 ] && echo -e "\033[32mAPCU 4.0.4 already installed!\033[0m"
     [ "$cache_select" == 3 ] && echo -e "\033[32mXCache 3.1.0 already installed!\033[0m"
 
-    [ "$php_select" == 1 ] && zendecho="Zend Optimizer" || zendecho="Zend GuardLoader"
-    read -p "Do you want install $zendecho?(Default y)[y/n]: " zend_install
+    if [ "$php_select" != 3 ]; then
+        read -p "Do you want install Zend Guard Loader?(Default y)[y/n]: " zend_install
+    fi
 
     if [ "$zend_install" != "y" -a "$zend_install" != "n" ]; then
         zend_install="y"
     fi
 
-    [ "$zend_install" == "y" ] && echo -e "\033[32m$zendecho already installed!\033[0m"
+    [ "$zend_install" == "y" ] && echo -e "\033[32mZend Guard Loader already installed!\033[0m"
 fi
 
 #install redis
@@ -280,6 +280,13 @@ chmod +x $PWD_DIR/init/*.sh
 chmod +x $SH_DIR/*.sh
 
 cpu_num=`cat /proc/cpuinfo | grep processor | wc -l`
+if [ "$web_select" == 2 ]; then
+    if [ -z "`openssl version | head -n1 | grep 1\.0\.1`" ]; then
+        openssl_install="y"
+    else
+        openssl_install="n"
+    fi
+fi
 
 #init
 if [ -f /etc/redhat-release ]; then
@@ -319,11 +326,9 @@ if [ "$nginx_install" == "y" ]; then
 fi
 
 #php
-if [ "$php_select" == 1 ]; then
-    . $SH_DIR/php52.sh 2>&1 | tee -a $LOG_FILE
-elif [ "$php_select" == 3 ]; then
+if [ "$php_select" == 2 ]; then
     . $SH_DIR/php54.sh 2>&1 | tee -a $LOG_FILE
-elif [ "$php_select" == 4 ]; then
+elif [ "$php_select" == 3 ]; then
     . $SH_DIR/php55.sh 2>&1 | tee -a $LOG_FILE
 else
     . $SH_DIR/php53.sh 2>&1 | tee -a $LOG_FILE
@@ -341,7 +346,7 @@ fi
 
 #cache
 if [ "$cache_install" == "y" ]; then
-    [ "$cache_select" == 1 ] && . $SH_DIR/zendopcache.sh 2>&1 | tee -a $LOG_FILE
+    [ "$cache_select" == 1 ] && . $SH_DIR/opcache.sh 2>&1 | tee -a $LOG_FILE
     [ "$cache_select" == 2 ] && . $SH_DIR/apcu.sh 2>&1 | tee -a $LOG_FILE
     [ "$cache_select" == 3 ] && . $SH_DIR/xcache.sh 2>&1 | tee -a $LOG_FILE
 fi

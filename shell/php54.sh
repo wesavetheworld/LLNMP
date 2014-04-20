@@ -10,15 +10,17 @@
 # Changed: 修复安装出现sapi/cli/php错误问题
 # Updated: 2014-04-13
 # Changed: 修复安装出错问题, 去除php-litespeed, 将make clean移到前面
+# Updated: 2014-04-18
+# Changed: 更新php版本到5.4.27
 
-[ ! -s $SRC_DIR/php-5.4.26.tar.gz ] && wget -c $GET_URI/php/php-5.4.26.tar.gz -O $SRC_DIR/php-5.4.26.tar.gz
+[ ! -s $SRC_DIR/php-5.4.27.tar.gz ] && wget -c $GET_URI/php/php-5.4.27.tar.gz -O $SRC_DIR/php-5.4.27.tar.gz
 
 [ ! -s /usr/local/lsws/phpbuild ] && mkdir -p /usr/local/lsws/phpbuild
 
 cd $SRC_DIR
-tar zxf php-5.4.26.tar.gz
-mv $SRC_DIR/php-5.4.26 /usr/local/lsws/phpbuild
-cd /usr/local/lsws/phpbuild/php-5.4.26
+tar zxf php-5.4.27.tar.gz
+mv $SRC_DIR/php-5.4.27 /usr/local/lsws/phpbuild
+cd /usr/local/lsws/phpbuild/php-5.4.27
 
 make clean
 touch ac*
@@ -43,17 +45,17 @@ fi
 make -j $cpu_num
 make -k install
 
-yes | cp -rf /usr/local/lsws/phpbuild/php-5.4.26/php.ini-production /usr/local/lsws/lsphp5/lib/php.ini
+yes | cp -rf /usr/local/lsws/phpbuild/php-5.4.27/php.ini-production /usr/local/lsws/lsphp5/lib/php.ini
 
 cd /usr/local/lsws/fcgi-bin
 
-[ -e "lsphp-5.4.26" ] && mv -s lsphp-5.4.26 lsphp-5.4.26.bak
+[ -e "lsphp-5.4.27" ] && mv -s lsphp-5.4.27 lsphp-5.4.27.bak
 
-cp /usr/local/lsws/phpbuild/php-5.4.26/sapi/litespeed/php lsphp-5.4.26
-ln -sf lsphp-5.4.26 lsphp5
-ln -sf lsphp-5.4.26 lsphp55
-chmod a+x lsphp-5.4.26
-chown -R lsadm:lsadm /usr/local/lsws/phpbuild/php-5.4.26
+cp /usr/local/lsws/phpbuild/php-5.4.27/sapi/litespeed/php lsphp-5.4.27
+ln -sf lsphp-5.4.27 lsphp5
+ln -sf lsphp-5.4.27 lsphp55
+chmod a+x lsphp-5.4.27
+chown -R lsadm:lsadm /usr/local/lsws/phpbuild/php-5.4.27
 
 sed -i 's/post_max_size = 8M/post_max_size = 50M/g' /usr/local/lsws/lsphp5/lib/php.ini
 sed -i 's/short_open_tag = Off/short_open_tag = On/g' /usr/local/lsws/lsphp5/lib/php.ini

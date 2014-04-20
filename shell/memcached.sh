@@ -8,10 +8,12 @@
 # Created: 2014-03-31
 # Updated: 2014-04-08
 # Changed: 修复libmemcached安装失败问题
+# Updated: 2014-04-18
+# Changed: 更新memcached版本到1.4.18
 
 useradd -M -s /sbin/nologin memcached
 
-[ ! -s $SRC_DIR/memcached-1.4.17.tar.gz ] && wget -c $GET_URI/memcached/memcached-1.4.17.tar.gz -O $SRC_DIR/memcached-1.4.17.tar.gz
+[ ! -s $SRC_DIR/memcached-1.4.18.tar.gz ] && wget -c $GET_URI/memcached/memcached-1.4.18.tar.gz -O $SRC_DIR/memcached-1.4.18.tar.gz
 
 [ ! -s $SRC_DIR/memcached-2.1.0.tgz ] && wget -c $GET_URI/memcached/lib/memcached-2.1.0.tgz -O $SRC_DIR/memcached-2.1.0.tgz
 
@@ -20,10 +22,10 @@ useradd -M -s /sbin/nologin memcached
 [ ! -s $SRC_DIR/memcache-2.2.7.tgz ] && wget -c $GET_URI/memcache/memcache-2.2.7.tgz -O $SRC_DIR/memcache-2.2.7.tgz
 
 cd $SRC_DIR
-tar zxf memcached-1.4.17.tar.gz
-cd memcached-1.4.17
+tar zxf memcached-1.4.18.tar.gz
+cd memcached-1.4.18
 ./configure --prefix=/usr/local/memcached
-make -j $cpu_num && make install
+make && make install
 
 ln -s /usr/local/memcached/bin/memcached /usr/bin/memcached
 
@@ -39,7 +41,7 @@ tar zxf memcache-2.2.7.tgz
 cd memcache-2.2.7
 /usr/local/lsws/lsphp5/bin/phpize
 ./configure --with-php-config=/usr/local/lsws/lsphp5/bin/php-config
-make -j $cpu_num && make install
+make && make install
 
 if [ -f "/usr/local/lsws/lsphp5/lib/php/extensions/`ls /usr/local/lsws/lsphp5/lib/php/extensions`/memcache.so" ];then
     sed -i 's/; extension_dir = ".\/"/extension_dir = ".\/"/g' /usr/local/lsws/lsphp5/lib/php.ini
@@ -59,7 +61,7 @@ if [ ! -z "`gcc --version | head -n1 | grep 4\.1`" ]; then
 fi
 
 ./configure --with-memcached=/usr/local/memcached
-make -j $cpu_num && make install
+make && make install
 
 cd $SRC_DIR
 tar zxf memcached-2.1.0.tgz

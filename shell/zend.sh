@@ -11,7 +11,7 @@ mkdir -p /usr/local/lsws/lsphp5/lib/php/zend
 
 if [ `getconf WORD_BIT` == 32 ] && [ `getconf LONG_BIT` == 64 ]; then
     if [ "$php_select" == 1 ]; then
-        [ ! -s $SRC_DIR/ZendGuardLoader-php-5.3-linux-glibc23-x86_64.tar.gz ] && wget -c $GET_URI/zend/ZendGuardLoader-php-5.3-linux-glibc23-x86_64.tar.gz -O $SRC_DIR/ZendGuardLoader-php-5.3-linux-glibc23-x86_64.tar.gz
+        [ ! -s $SRC_DIR/ZendGuardLoader-php-5.3-linux-glibc23-x86_64.tar.gz ] && wget -c http://downloads.zend.com/guard/5.5.0/ZendGuardLoader-php-5.3-linux-glibc23-x86_64.tar.gz -O $SRC_DIR/ZendGuardLoader-php-5.3-linux-glibc23-x86_64.tar.gz
 
         cd $SRC_DIR
         tar zxf ZendGuardLoader-php-5.3-linux-glibc23-x86_64.tar.gz
@@ -19,7 +19,7 @@ if [ `getconf WORD_BIT` == 32 ] && [ `getconf LONG_BIT` == 64 ]; then
     fi
 
     if [ "$php_select" == 2 ]; then
-        [ ! -s $SRC_DIR/ZendGuardLoader-70429-PHP-5.4-linux-glibc23-x86_64.tar.gz ] && wget -c $GET_URI/zend/ZendGuardLoader-70429-PHP-5.4-linux-glibc23-x86_64.tar.gz -O $SRC_DIR/ZendGuardLoader-70429-PHP-5.4-linux-glibc23-x86_64.tar.gz
+        [ ! -s $SRC_DIR/ZendGuardLoader-70429-PHP-5.4-linux-glibc23-x86_64.tar.gz ] && wget -c http://downloads.zend.com/guard/6.0.0/ZendGuardLoader-70429-PHP-5.4-linux-glibc23-x86_64.tar.gz -O $SRC_DIR/ZendGuardLoader-70429-PHP-5.4-linux-glibc23-x86_64.tar.gz
 
         cd $SRC_DIR
         tar zxf ZendGuardLoader-70429-PHP-5.4-linux-glibc23-x86_64.tar.gz
@@ -27,7 +27,7 @@ if [ `getconf WORD_BIT` == 32 ] && [ `getconf LONG_BIT` == 64 ]; then
     fi
 else
     if [ "$php_select" == 1 ]; then
-        [ ! -s $SRC_DIR/ZendGuardLoader-php-5.3-linux-glibc23-i386.tar.gz ] && wget -c $GET_URI/zend/ZendGuardLoader-php-5.3-linux-glibc23-i386.tar.gz -O $SRC_DIR/ZendGuardLoader-php-5.3-linux-glibc23-i386.tar.gz
+        [ ! -s $SRC_DIR/ZendGuardLoader-php-5.3-linux-glibc23-i386.tar.gz ] && wget -c http://downloads.zend.com/guard/5.5.0/ZendGuardLoader-php-5.3-linux-glibc23-i386.tar.gz -O $SRC_DIR/ZendGuardLoader-php-5.3-linux-glibc23-i386.tar.gz
 
         cd $SRC_DIR
         tar zxf ZendGuardLoader-php-5.3-linux-glibc23-i386.tar.gz
@@ -35,7 +35,7 @@ else
     fi
 
     if [ "$php_select" == 2 ]; then
-        [ ! -s $SRC_DIR/ZendGuardLoader-70429-PHP-5.4-linux-glibc23-i386.tar.gz ] && wget -c $GET_URI/zend/ZendGuardLoader-70429-PHP-5.4-linux-glibc23-i386.tar.gz -O $SRC_DIR/ZendGuardLoader-70429-PHP-5.4-linux-glibc23-i386.tar.gz
+        [ ! -s $SRC_DIR/ZendGuardLoader-70429-PHP-5.4-linux-glibc23-i386.tar.gz ] && wget -c http://downloads.zend.com/guard/6.0.0/ZendGuardLoader-70429-PHP-5.4-linux-glibc23-i386.tar.gz -O $SRC_DIR/ZendGuardLoader-70429-PHP-5.4-linux-glibc23-i386.tar.gz
 
         cd $SRC_DIR
         tar zxf ZendGuardLoader-70429-PHP-5.4-linux-glibc23-i386.tar.gz

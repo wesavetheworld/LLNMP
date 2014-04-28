@@ -10,16 +10,18 @@
 # Changed: 修复libmemcached安装失败问题
 # Updated: 2014-04-18
 # Changed: 更新memcached版本到1.4.18
+# Updated: 2014-04-25
+# Changed: 更新memcached组件版本到2.2.0
 
 useradd -M -s /sbin/nologin memcached
 
-[ ! -s $SRC_DIR/memcached-1.4.18.tar.gz ] && wget -c $GET_URI/memcached/memcached-1.4.18.tar.gz -O $SRC_DIR/memcached-1.4.18.tar.gz
+[ ! -s $SRC_DIR/memcached-1.4.18.tar.gz ] && wget -c http://www.memcached.org/files/memcached-1.4.18.tar.gz -O $SRC_DIR/memcached-1.4.18.tar.gz
 
-[ ! -s $SRC_DIR/memcached-2.1.0.tgz ] && wget -c $GET_URI/memcached/lib/memcached-2.1.0.tgz -O $SRC_DIR/memcached-2.1.0.tgz
+[ ! -s $SRC_DIR/memcached-2.2.0.tgz ] && wget -c http://pecl.php.net/get/memcached-2.2.0.tgz -O $SRC_DIR/memcached-2.2.0.tgz
 
-[ ! -s $SRC_DIR/libmemcached-1.0.18.tar.gz ] && wget -c $GET_URI/libmemcached/libmemcached-1.0.18.tar.gz -O $SRC_DIR/libmemcached-1.0.18.tar.gz
+[ ! -s $SRC_DIR/libmemcached-1.0.18.tar.gz ] && wget -c https://launchpad.net/libmemcached/1.0/1.0.18/+download/libmemcached-1.0.18.tar.gz -O $SRC_DIR/libmemcached-1.0.18.tar.gz
 
-[ ! -s $SRC_DIR/memcache-2.2.7.tgz ] && wget -c $GET_URI/memcache/memcache-2.2.7.tgz -O $SRC_DIR/memcache-2.2.7.tgz
+[ ! -s $SRC_DIR/memcache-2.2.7.tgz ] && wget -c http://pecl.php.net/get/memcache-2.2.7.tgz -O $SRC_DIR/memcache-2.2.7.tgz
 
 cd $SRC_DIR
 tar zxf memcached-1.4.18.tar.gz
@@ -64,8 +66,8 @@ fi
 make && make install
 
 cd $SRC_DIR
-tar zxf memcached-2.1.0.tgz
-cd memcached-2.1.0
+tar zxf memcached-2.2.0.tgz
+cd memcached-2.2.0
 /usr/local/lsws/lsphp5/bin/phpize
 ./configure --with-php-config=/usr/local/lsws/lsphp5/bin/php-config
 make -j $cpu_num && make install

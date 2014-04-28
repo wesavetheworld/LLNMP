@@ -63,35 +63,19 @@ do
 done
 
 #select web server
-if [ -f /etc/redhat-release ]; then
-    echo "Please select a web server:"
-    echo -e "\t\033[32m1\033[0m. Install LiteSpeed 4.2.9Std"
-    echo -e "\t\033[32m2\033[0m. Install OpenLiteSpeed 1.3"
-    read -p "(Default LiteSpeed 4.2.9Std): " web_select
+echo "Please select a web server:"
+echo -e "\t\033[32m1\033[0m. Install LiteSpeed 4.2.9Std"
+echo -e "\t\033[32m2\033[0m. Install OpenLiteSpeed 1.2.9"
+read -p "(Default LiteSpeed 4.2.9Std): " web_select
 
-    if [ "$web_select" != 1 -a "$web_select" != 2 ]; then
-        web_select=1
-    fi
-
-    [ "$web_select" == 1 ] && webecho="LiteSpeed 4.2.9Std"
-    [ "$web_select" == 2 ] && webecho="OpenLiteSpeed 1.3"
-
-    echo -e "\033[32m$webecho already installed!\033[0m"
-else
-    echo "Please select a web server:"
-    echo -e "\t\033[32m1\033[0m. Install LiteSpeed 4.2.9Std"
-    echo -e "\t\033[32m2\033[0m. Install OpenLiteSpeed 1.3"
-    read -p "(Default LiteSpeed 4.2.7Std): " web_select
-
-    if [ "$web_select" != 1 -a "$web_select" != 2 ]; then
-        web_select=1
-    fi
-
-    [ "$web_select" == 1 ] && webecho="LiteSpeed 4.2.9Std"
-    [ "$web_select" == 2 ] && webecho="OpenLiteSpeed 1.3"
-
-    echo -e "\033[32m$webecho already installed!\033[0m"
+if [ "$web_select" != 1 -a "$web_select" != 2 ]; then
+    web_select=1
 fi
+
+[ "$web_select" == 1 ] && webecho="LiteSpeed 4.2.9Std"
+[ "$web_select" == 2 ] && webecho="OpenLiteSpeed 1.2.9"
+
+echo -e "\033[32m$webecho already installed!\033[0m"
 
 #set litespeed user name
 echo "Please input the user name of $webecho:"
@@ -280,13 +264,6 @@ chmod +x $PWD_DIR/init/*.sh
 chmod +x $SH_DIR/*.sh
 
 cpu_num=`cat /proc/cpuinfo | grep processor | wc -l`
-if [ "$web_select" == 2 ]; then
-    if [ -z "`openssl version | head -n1 | grep 1\.0\.1`" ]; then
-        openssl_install="y"
-    else
-        openssl_install="n"
-    fi
-fi
 
 #init
 if [ -f /etc/redhat-release ]; then

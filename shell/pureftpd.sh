@@ -7,9 +7,9 @@
 # Version: Ver 0.4
 # Created: 2014-03-31
 
-[ ! -s $SRC_DIR/pure-ftpd-1.0.36.tar.gz ] && wget -c $GET_URI/pureftpd/pure-ftpd-1.0.36.tar.gz -O $SRC_DIR/pure-ftpd-1.0.36.tar.gz
+[ ! -s $SRC_DIR/pure-ftpd-1.0.36.tar.gz ] && wget -c http://download.pureftpd.org/pub/pure-ftpd/releases/pure-ftpd-1.0.36.tar.gz -O $SRC_DIR/pure-ftpd-1.0.36.tar.gz
 
-[ ! -s $SRC_DIR/User_manager_for-PureFTPd_v2.1_CN.zip ] && wget -c $GET_URI/pureftpd/User_manager_for-PureFTPd_v2.1_CN.zip -O $SRC_DIR/User_manager_for-PureFTPd_v2.1_CN.zip
+[ ! -s $SRC_DIR/User_manager_for-PureFTPd_v2.1_CN.zip ] && wget -c http://soft.vpser.net/ftp/pure-ftpd/User_manager_for-PureFTPd_v2.1_CN.zip -O $SRC_DIR/User_manager_for-PureFTPd_v2.1_CN.zip
 
 cp /usr/local/mysql/lib/libmysqlclient* /usr/lib
 cp /usr/local/mysql/lib/mysql/*.* /usr/lib/

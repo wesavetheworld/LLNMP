@@ -11,9 +11,9 @@
 # Updated: 2014-04-13
 # Changed: 修复安装出错问题, 将make clean移到前面
 
-[ ! -s $SRC_DIR/php-5.3.28.tar.gz ] && wget -c $GET_URI/php/php-5.3.28.tar.gz -O $SRC_DIR/php-5.3.28.tar.gz
+[ ! -s $SRC_DIR/php-5.3.28.tar.gz ] && wget -c http://www.php.net/distributions/php-5.3.28.tar.gz -O $SRC_DIR/php-5.3.28.tar.gz
 
-[ ! -s $SRC_DIR/php-litespeed-6.6.tgz ]&& wget -c $GET_URI/php-litespeed/php-litespeed-6.6.tgz -O $SRC_DIR/php-litespeed-6.6.tgz
+[ ! -s $SRC_DIR/php-litespeed-6.6.tgz ]&& wget -c http://www.litespeedtech.com/packages/lsapi/php-litespeed-6.6.tgz -O $SRC_DIR/php-litespeed-6.6.tgz
 
 yum install -y autoconf213
 
@@ -34,7 +34,6 @@ export PHP_AUTOCONF=/usr/bin/autoconf-2.13
 
 if [ `getconf LONG_BIT` == 64 ]; then
     ln -s /usr/local/mysql/lib /usr/local/mysql/lib64
-    ln -s /usr/local/mysql/lib/libmysqlclient.so.18  /usr/lib64/
     ./configure '--disable-fileinfo' '--prefix=/usr/local/lsws/lsphp5' '--with-libdir=lib64' '--with-pdo-mysql=/usr/local/mysql/bin/mysql_config' '--with-mysql=/usr/local/mysql' '--with-mysqli=/usr/local/mysql/bin/mysql_config' '--with-zlib' '--with-gd' '--enable-shmop' '--enable-sockets' '--enable-sysvsem' '--enable-sysvshm' '--enable-magic-quotes' '--enable-mbstring' '--with-iconv' '--enable-inline-optimization' '--with-curl' '--with-curlwrappers' '--with-mcrypt' '--with-mhash' '--with-openssl' '--with-freetype-dir=/usr/lib' '--with-jpeg-dir=/usr/lib' '--with-png-dir' '--with-libxml-dir=/usr' '--enable-xml' '--disable-rpath' '--enable-mbregex' '--enable-gd-native-ttf' '--enable-pcntl' '--with-ldap' '--with-ldap-sasl' '--with-xmlrpc' '--enable-zip' '--enable-soap' '--enable-ftp' '--disable-debug' '--with-gettext' '--enable-bcmath' '--with-litespeed'
 else
     ln -s /usr/local/mysql/lib/libmysqlclient.so.18  /usr/lib/

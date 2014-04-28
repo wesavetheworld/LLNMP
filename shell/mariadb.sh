@@ -15,7 +15,7 @@ mkdir -p /data/mysql
 
 [ "$jemalloc_install" == "y" ] && COMMAND="-DCMAKE_EXE_LINKER_FLAGS='-ljemalloc'"
 
-[ ! -f $SRC_DIR/mariadb-5.5.37.tar.gz ] && wget -c $GET_URI/mariadb/mariadb-5.5.37.tar.gz -O $SRC_DIR/mariadb-5.5.37.tar.gz
+[ ! -f $SRC_DIR/mariadb-5.5.37.tar.gz ] && wget -c http://ftp.osuosl.org/pub/mariadb/mariadb-5.5.37/source/mariadb-5.5.37.tar.gz -O $SRC_DIR/mariadb-5.5.37.tar.gz
 
 cd $SRC_DIR
 tar zxf mariadb-5.5.37.tar.gz
@@ -190,6 +190,8 @@ EOF
 
 /usr/local/mysql/bin/mysql -u root -p$dbpass -h localhost < /tmp/mysql_sec_script
 rm -f /tmp/mysql_sec_script
-ln -s /usr/local/mysql/lib/libmysqlclient.so.18 /usr/lib
+
+bit=$(getconf LONG_BIT)
+[ "$bit" == "64" ] && ln -s /usr/local/mysql/lib/libmysqlclient.so.18 /usr/lib64 || ln -s /usr/local/mysql/lib/libmysqlclient.so.18 /usr/lib
 
 service mysqld restart

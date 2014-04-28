@@ -9,7 +9,7 @@
 # Updated: 2014-04-13
 # Changed: 增加apcu.php
 
-[ ! -s $SRC_DIR/apcu-4.0.4.tgz ] && wget -c $GET_URI/apcu/apcu-4.0.4.tgz -O $SRC_DIR/apcu-4.0.4.tgz
+[ ! -s $SRC_DIR/apcu-4.0.4.tgz ] && wget -c http://pecl.php.net/get/apcu-4.0.4.tgz -O $SRC_DIR/apcu-4.0.4.tgz
 
 cd $SRC_DIR
 tar zxf apcu-4.0.4.tgz

@@ -16,7 +16,7 @@
 useradd -M -s /sbin/nologin www
 mkdir -p /home/wwwroot/default
 
-[ ! -s $SRC_DIR/lsws-4.2.9-std-i386-linux.tar.gz ] && wget -c $GET_URI/litespeed/lsws-4.2.9-std-i386-linux.tar.gz -O $SRC_DIR/lsws-4.2.9-std-i386-linux.tar.gz
+[ ! -s $SRC_DIR/lsws-4.2.9-std-i386-linux.tar.gz ] && wget -c http://www.litespeedtech.com/packages/4.0/lsws-4.2.9-std-i386-linux.tar.gz -O $SRC_DIR/lsws-4.2.9-std-i386-linux.tar.gz
 
 cd $SRC_DIR
 tar zxf lsws-4.2.9-std-i386-linux.tar.gz

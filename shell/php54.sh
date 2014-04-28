@@ -13,7 +13,7 @@
 # Updated: 2014-04-18
 # Changed: 更新php版本到5.4.27
 
-[ ! -s $SRC_DIR/php-5.4.27.tar.gz ] && wget -c $GET_URI/php/php-5.4.27.tar.gz -O $SRC_DIR/php-5.4.27.tar.gz
+[ ! -s $SRC_DIR/php-5.4.27.tar.gz ] && wget -c http://www.php.net/distributions/php-5.4.27.tar.gz -O $SRC_DIR/php-5.4.27.tar.gz
 
 [ ! -s /usr/local/lsws/phpbuild ] && mkdir -p /usr/local/lsws/phpbuild
 

@@ -14,23 +14,41 @@
 # Changed: 修复CentOS 5下升级OpenSSL 1.0.1不成功问题
 # Updated: 2014-04-20
 # Changed: 更改OpenLiteSpeed安装方式, 直接使用rpm安装
+# Changed: 更改rpm安装时替换OpenLiteSpeed控制面板使用http方式登陆
+# Updated: 2014-04-24
+# Changed: 退回1.2.9版本，CentOS 5与6使用不同的安装方式安装
 
 useradd -M -s /sbin/nologin www
 mkdir -p /home/wwwroot/default
 
 centosversion=$(cat /etc/redhat-release | grep -o [0-9] | sed 1q)
-[ "$centosversion" == "5" ] && rpm -ivh http://rpms.litespeedtech.com/centos/litespeed-repo-1.1-1.el5.noarch.rpm || rpm -ivh http://rpms.litespeedtech.com/centos/litespeed-repo-1.1-1.el6.noarch.rpm
-yum install openlitespeed-1.3 -y
+if [ "$centosversion" == "5" ]; then
+    rpm -ivh http://rpms.litespeedtech.com/centos/litespeed-repo-1.1-1.el5.noarch.rpm
+    yum -y install openlitespeed-1.2.9
 
-chown -R www.www /usr/local/lsws/admin/cgid
-chown -R lsadm.www /usr/local/lsws/admin/tmp
+    chown -R www.www /usr/local/lsws/admin/cgid
+    chown -R lsadm.www /usr/local/lsws/admin/tmp
 
-sed -i 's/<user>nobody<\/user>/<user>www<\/user>/g' /usr/local/lsws/conf/httpd_config.xml
-sed -i 's/<group>nobody<\/group>/<group>www<\/group>/g' /usr/local/lsws/conf/httpd_config.xml
-sed -i 's/<vhRoot>\$SERVER_ROOT\/DEFAULT\/<\/vhRoot>/<vhRoot>\/home\/wwwroot\/default\/<\/vhRoot>/g' /usr/local/lsws/conf/httpd_config.xml
-sed -i 's/<configFile>\$VH_ROOT\/conf\/vhconf\.xml<\/configFile>/<configFile>\$SERVER_ROOT\/conf\/default\.xml<\/configFile>/g' /usr/local/lsws/conf/httpd_config.xml
+    sed -i 's/<user>nobody<\/user>/<user>www<\/user>/g' /usr/local/lsws/conf/httpd_config.xml
+    sed -i 's/<group>nobody<\/group>/<group>www<\/group>/g' /usr/local/lsws/conf/httpd_config.xml
+    sed -i 's/<secure>1<\/secure>/<secure>0<\/secure>/g' /usr/local/lsws/admin/conf/admin_config.xml
 
-[ "$nginx_install" == "n" ] && sed -i 's/<address>*:8088<\/address>/<address>*:80<\/address>/g' /usr/local/lsws/conf/httpd_config.xml
+    [ "$nginx_install" == "n" ] && sed -i 's/<address>*:8088<\/address>/<address>*:80<\/address>/g' /usr/local/lsws/conf/httpd_config.xml
+
+    PASS=`/usr/local/lsws/admin/fcgi-bin/admin_php -q /usr/local/lsws/admin/misc/htpasswd.php $webpass`
+    echo "$webuser:$PASS" > /usr/local/lsws/admin/conf/htpasswd
+else
+    [ ! -s $SRC_DIR/openlitespeed-1.2.9.tgz ] && wget -c http://open.litespeedtech.com/packages/openlitespeed-1.2.9.tgz -O $SRC_DIR/openlitespeed-1.2.9.tgz
+
+    cd $SRC_DIR
+    tar zxf openlitespeed-1.2.9.tgz
+    cd openlitespeed-1.2.9
+
+    [ "$nginx_install" == "n" ] && sed -i "s/HTTP_PORT=8088/HTTP_PORT=80/g" dist/install.sh
+
+    ./configure --prefix=/usr/local/lsws --with-user=www --with-group=www --with-admin=$webuser --with-password=$webpass --with-email=$webemail --enable-adminssl=no --enable-spdy
+    make -j $cpu_num && make install
+fi
 
 sed -i 's/<vhRoot>\$SERVER_ROOT\/DEFAULT\/<\/vhRoot>/<vhRoot>\/home\/wwwroot\/default\/<\/vhRoot>/g' /usr/local/lsws/conf/httpd_config.xml
 sed -i 's/<configFile>\$VH_ROOT\/conf\/vhconf\.xml<\/configFile>/<configFile>\$SERVER_ROOT\/conf\/default\.xml<\/configFile>/g' /usr/local/lsws/conf/httpd_config.xml
@@ -38,8 +56,5 @@ sed -i 's/<configFile>\$VH_ROOT\/conf\/vhconf\.xml<\/configFile>/<configFile>\$S
 cp $PWD_DIR/conf/vhconf.xml /usr/local/lsws/conf/default.xml
 rm -rf /usr/local/lsws/DEFAULT/
 mkdir -p /home/wwwlogs/litespeed
-
-PASS=`/usr/local/lsws/admin/fcgi-bin/admin_php -q /usr/local/lsws/admin/misc/htpasswd.php $webpass`
-echo "$webuser:$PASS" > /usr/local/lsws/admin/conf/htpasswd
 
 service lsws restart

@@ -9,7 +9,7 @@
 # Updated: 2014-04-18
 # Changed: 更新jemalloc版本到3.6.0
 
-[ ! -f $SRC_DIR/jemalloc-3.6.0.tar.bz2 ] && wget -c $GET_URI/jemalloc/jemalloc-3.6.0.tar.bz2 -O $SRC_DIR/jemalloc-3.6.0.tar.bz2
+[ ! -f $SRC_DIR/jemalloc-3.6.0.tar.bz2 ] && wget -c http://www.canonware.com/download/jemalloc/jemalloc-3.6.0.tar.bz2 -O $SRC_DIR/jemalloc-3.6.0.tar.bz2
 
 cd $SRC_DIR
 tar xjf jemalloc-3.6.0.tar.bz2

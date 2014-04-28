@@ -10,10 +10,12 @@
 # Changed: 修复无法添加到php.ini问题
 # Updated: 2014-04-13
 # Changed: 增加redis.php
+# Updated: 2014-04-25
+# Changed: 更新redis版本到2.8.9
 
-[ ! -s $SRC_DIR/redis-2.8.8.tar.gz ] && wget -c $GET_URI/redis/redis-2.8.8.tar.gz -O $SRC_DIR/redis-2.8.8.tar.gz
+[ ! -s $SRC_DIR/redis-2.8.9.tar.gz ] && wget -c http://download.redis.io/releases/redis-2.8.9.tar.gz -O $SRC_DIR/redis-2.8.9.tar.gz
 
-[ ! -s $SRC_DIR/redis-2.2.5.tgz ] && wget -c $GET_URI/redis/lib/redis-2.2.5.tgz -O $SRC_DIR/redis-2.2.5.tgz
+[ ! -s $SRC_DIR/redis-2.2.5.tgz ] && wget -c http://pecl.php.net/get/redis-2.2.5.tgz -O $SRC_DIR/redis-2.2.5.tgz
 
 cd $SRC_DIR
 tar zxf redis-2.2.5.tgz
@@ -29,8 +31,8 @@ if [ -f "/usr/local/lsws/lsphp5/lib/php/extensions/`ls /usr/local/lsws/lsphp5/li
 fi
 
 cd $SRC_DIR
-tar zxf redis-2.8.8.tar.gz
-cd redis-2.8.8
+tar zxf redis-2.8.9.tar.gz
+cd redis-2.8.9
 
 if [ `getconf LONG_BIT` == 32 ]; then
     sed -i '1i\CFLAGS= -march=i686' src/Makefile

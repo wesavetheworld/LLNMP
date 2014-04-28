@@ -11,24 +11,25 @@
 # Updated: 2014-04-14
 # Changed: 修正LiteSpeed无法获取真实IP问题
 # Updated: 修复CentOS 5升级OpenSSL 1.0.1后无法安装Nginx问题
+# Updated: 2014-04-22
+# Changed: 放弃CentOS 5下安装OpenLiteSpeed, 问题多多
+# Updated: 2014-04-25
+# Changed: 更新nginx版本到1.6.0
 
 [ "$jemalloc_install" == "y" ] && COMMAND="--with-ld-opt='-ljemalloc'"
 
-[ ! -s $SRC_DIR/nginx-1.4.7.tar.gz ] && wget -c $GET_URI/nginx/nginx-1.4.7.tar.gz -O $SRC_DIR/nginx-1.4.7.tar.gz
+[ ! -s $SRC_DIR/nginx-1.6.0.tar.gz ] && wget -c http://nginx.org/download/nginx-1.6.0.tar.gz -O $SRC_DIR/nginx-1.6.0.tar.gz
 
 sed -i 's/<autoUpdateInterval>/<useIpInProxyHeader>1<\/useIpInProxyHeader>\n    &/' /usr/local/lsws/conf/httpd_config.xml
 
 cd $SRC_DIR
-tar zxf nginx-1.4.7.tar.gz
-cd nginx-1.4.7
+tar zxf nginx-1.6.0.tar.gz
+cd nginx-1.6.0
 
 sed -i 's@CFLAGS="$CFLAGS -g"@#CFLAGS="$CFLAGS -g"@' auto/cc/gcc
 
 ./configure --user=www --group=www --prefix=/usr/local/nginx --with-http_stub_status_module --with-http_ssl_module --with-http_gzip_static_module $COMMAND
-
-[ "$openssl_install" == "y" ] && make || make -j $cpu_num
-
-make install
+make -j $cpu_num && make install
 
 mkdir -p /home/wwwlogs/nginx /usr/local/nginx/conf/vhost
 rm -f /usr/local/nginx/conf/nginx.conf

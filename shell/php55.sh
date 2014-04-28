@@ -10,7 +10,7 @@
 # Changed: 修复安装出错问题, 去除php-litespeed, 将make clean移到前面
 # Updated: 更新php版本到5.5.11
 
-[ ! -s $SRC_DIR/php-5.5.11.tar.gz ] && wget -c $GET_URI/php/php-5.5.11.tar.gz -O $SRC_DIR/php-5.5.11.tar.gz
+[ ! -s $SRC_DIR/php-5.5.11.tar.gz ] && wget -c http://www.php.net/distributions/php-5.5.11.tar.gz -O $SRC_DIR/php-5.5.11.tar.gz
 
 [ ! -s /usr/local/lsws/phpbuild ] && mkdir -p /usr/local/lsws/phpbuild
 
@@ -26,8 +26,7 @@ rm -rf autom4te.*
 [ "$cache_select" == 3 ] && COMMAND='--enable-opcache' || COMMAND='--disable-opcache'
 if [ `getconf LONG_BIT` == 64 ]; then
     ln -s /usr/local/mysql/lib /usr/local/mysql/lib64
-    export LD_LIBRARY_PATH=/lib:/lib64:/usr/lib:/usr/lib64:/usr/local/lib:/usr/local/lib64
-    ./configure '--disable-fileinfo' '--prefix=/usr/local/lsws/lsphp5' $COMMAND '--with-libdir=lib64' '--with-mysql=/usr/local/mysql' '--with-mysqli=/usr/local/mysql/bin/mysql_config' '--with-pdo-mysql=/usr/local/mysql/bin/mysql_config' '--with-iconv' '--with-freetype-dir=/usr/lib' '--with-jpeg-dir=/usr/lib' '--with-png-dir' '--with-zlib' '--with-libxml-dir=/usr' '--enable-xml' '--disable-rpath' '--enable-bcmath' '--enable-shmop' '--enable-exif' '--enable-sysvsem' '--enable-inline-optimization' '--with-curl' '--enable-mbregex' '--enable-mbstring' '--with-mcrypt' '--with-gd' '--enable-gd-native-ttf' '--with-openssl' '--with-mhash' '--enable-pcntl' '--enable-sockets' '--with-xmlrpc' '--enable-ftp' '--with-gettext' '--enable-sysvshm' '--enable-magic-quotes' '--with-curlwrappers' '--with-ldap' '--with-ldap-sasl' '--enable-zip' '--enable-soap' '--disable-debug' '--with-litespeed'
+    ./configure '--disable-fileinfo' '--prefix=/usr/local/lsws/lsphp5' '--with-libdir=lib64' $COMMAND '--with-libdir=lib64' '--with-mysql=/usr/local/mysql' '--with-mysqli=/usr/local/mysql/bin/mysql_config' '--with-pdo-mysql=/usr/local/mysql/bin/mysql_config' '--with-iconv' '--with-freetype-dir=/usr/lib' '--with-jpeg-dir=/usr/lib' '--with-png-dir' '--with-zlib' '--with-libxml-dir=/usr' '--enable-xml' '--disable-rpath' '--enable-bcmath' '--enable-shmop' '--enable-exif' '--enable-sysvsem' '--enable-inline-optimization' '--with-curl' '--enable-mbregex' '--enable-mbstring' '--with-mcrypt' '--with-gd' '--enable-gd-native-ttf' '--with-openssl' '--with-mhash' '--enable-pcntl' '--enable-sockets' '--with-xmlrpc' '--enable-ftp' '--with-gettext' '--enable-sysvshm' '--enable-magic-quotes' '--with-curlwrappers' '--with-ldap' '--with-ldap-sasl' '--enable-zip' '--enable-soap' '--disable-debug' '--with-litespeed'
 else
     ./configure '--disable-fileinfo' '--prefix=/usr/local/lsws/lsphp5' $COMMAND '--with-mysql=/usr/local/mysql' '--with-mysqli=/usr/local/mysql/bin/mysql_config' '--with-pdo-mysql=/usr/local/mysql/bin/mysql_config' '--with-iconv' '--with-freetype-dir=/usr/lib' '--with-jpeg-dir=/usr/lib' '--with-png-dir' '--with-zlib' '--with-libxml-dir=/usr' '--enable-xml' '--disable-rpath' '--enable-bcmath' '--enable-shmop' '--enable-exif' '--enable-sysvsem' '--enable-inline-optimization' '--with-curl' '--enable-mbregex' '--enable-mbstring' '--with-mcrypt' '--with-gd' '--enable-gd-native-ttf' '--with-openssl' '--with-mhash' '--enable-pcntl' '--enable-sockets' '--with-xmlrpc' '--enable-ftp' '--with-gettext' '--enable-sysvshm' '--enable-magic-quotes' '--with-curlwrappers' '--with-ldap' '--with-ldap-sasl' '--enable-zip' '--enable-soap' '--disable-debug' '--with-litespeed'
 fi

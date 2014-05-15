@@ -17,6 +17,12 @@
 # Changed: 更改rpm安装时替换OpenLiteSpeed控制面板使用http方式登陆
 # Updated: 2014-04-24
 # Changed: 退回1.2.9版本，CentOS 5与6使用不同的安装方式安装
+# Updated: 2014-05-01
+# Changed: 增加openssl 1.0.1
+# Updated: 2014-05-07
+# Changed: 去除SPDY支持, 避免安装失败
+# Updated: 2014-05-15
+# Changed: 更新Openlitespeed到1.3.1
 
 useradd -M -s /sbin/nologin www
 mkdir -p /home/wwwroot/default
@@ -24,7 +30,7 @@ mkdir -p /home/wwwroot/default
 centosversion=$(cat /etc/redhat-release | grep -o [0-9] | sed 1q)
 if [ "$centosversion" == "5" ]; then
     rpm -ivh http://rpms.litespeedtech.com/centos/litespeed-repo-1.1-1.el5.noarch.rpm
-    yum -y install openlitespeed-1.2.9
+    yum -y install openlitespeed-1.3.1
 
     chown -R www.www /usr/local/lsws/admin/cgid
     chown -R lsadm.www /usr/local/lsws/admin/tmp
@@ -38,18 +44,19 @@ if [ "$centosversion" == "5" ]; then
     PASS=`/usr/local/lsws/admin/fcgi-bin/admin_php -q /usr/local/lsws/admin/misc/htpasswd.php $webpass`
     echo "$webuser:$PASS" > /usr/local/lsws/admin/conf/htpasswd
 else
-    [ ! -s $SRC_DIR/openlitespeed-1.2.9.tgz ] && wget -c http://open.litespeedtech.com/packages/openlitespeed-1.2.9.tgz -O $SRC_DIR/openlitespeed-1.2.9.tgz
+    [ ! -s $SRC_DIR/openlitespeed-1.3.1.tgz ] && wget -c http://open.litespeedtech.com/packages/openlitespeed-1.3.1.tgz -O $SRC_DIR/openlitespeed-1.3.1.tgz
 
     cd $SRC_DIR
-    tar zxf openlitespeed-1.2.9.tgz
-    cd openlitespeed-1.2.9
+    tar zxf openlitespeed-1.3.1.tgz
+    cd openlitespeed-1.3.1
 
     [ "$nginx_install" == "n" ] && sed -i "s/HTTP_PORT=8088/HTTP_PORT=80/g" dist/install.sh
 
-    ./configure --prefix=/usr/local/lsws --with-user=www --with-group=www --with-admin=$webuser --with-password=$webpass --with-email=$webemail --enable-adminssl=no --enable-spdy
+    ./configure --prefix=/usr/local/lsws --with-user=www --with-group=www --with-admin=$webuser --with-password=$webpass --with-email=$webemail --enable-adminssl=no
     make -j $cpu_num && make install
 fi
 
+[ "$nginx_install" == "y" ] && sed -i 's/<autoUpdateInterval>/<useIpInProxyHeader>1<\/useIpInProxyHeader>\n    &/' /usr/local/lsws/conf/httpd_config.xml
 sed -i 's/<vhRoot>\$SERVER_ROOT\/DEFAULT\/<\/vhRoot>/<vhRoot>\/home\/wwwroot\/default\/<\/vhRoot>/g' /usr/local/lsws/conf/httpd_config.xml
 sed -i 's/<configFile>\$VH_ROOT\/conf\/vhconf\.xml<\/configFile>/<configFile>\$SERVER_ROOT\/conf\/default\.xml<\/configFile>/g' /usr/local/lsws/conf/httpd_config.xml
 

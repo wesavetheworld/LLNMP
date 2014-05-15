@@ -12,6 +12,8 @@
 # Changed: 增加redis.php
 # Updated: 2014-04-25
 # Changed: 更新redis版本到2.8.9
+# Updated: 2014-04-29
+# Changed: 增加Debian支持
 
 [ ! -s $SRC_DIR/redis-2.8.9.tar.gz ] && wget -c http://download.redis.io/releases/redis-2.8.9.tar.gz -O $SRC_DIR/redis-2.8.9.tar.gz
 
@@ -67,10 +69,18 @@ if [ -f src/redis-server ]; then
     fi
 fi
 
-cp $PWD_DIR/conf/redis /etc/init.d/redis
-chmod +x /etc/init.d/redis
-chkconfig --add redis
-chkconfig redis on
+if [ -f /etc/redhat-release ]; then
+    cp $PWD_DIR/conf/redis-centos /etc/init.d/redis
+    chmod +x /etc/init.d/redis
+    chkconfig --add redis
+    chkconfig redis on
+else
+    useradd -M -s /sbin/nologin redis
+    chown -R redis:redis /usr/local/redis/var
+    cp $PWD_DIR/conf/redis-debian /etc/init.d/redis
+    chmod +x /etc/init.d/redis
+    update-rc.d redis defaults
+fi
 
 service redis start
 

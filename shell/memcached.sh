@@ -12,29 +12,41 @@
 # Changed: 更新memcached版本到1.4.18
 # Updated: 2014-04-25
 # Changed: 更新memcached组件版本到2.2.0
+# Updated: 2014-04-29
+# Changed: 增加Debian支持
+# Updated: 2014-05-02
+# Changed: 更新Memcached到1.4.19
+# Updated: 2014-05-15
+# Changed: 更新Memcached到1.4.20
 
 useradd -M -s /sbin/nologin memcached
 
-[ ! -s $SRC_DIR/memcached-1.4.18.tar.gz ] && wget -c http://www.memcached.org/files/memcached-1.4.18.tar.gz -O $SRC_DIR/memcached-1.4.18.tar.gz
+[ ! -s $SRC_DIR/memcached-1.4.20.tar.gz ] && wget -c http://www.memcached.org/files/memcached-1.4.20.tar.gz -O $SRC_DIR/memcached-1.4.20.tar.gz
 
 [ ! -s $SRC_DIR/memcached-2.2.0.tgz ] && wget -c http://pecl.php.net/get/memcached-2.2.0.tgz -O $SRC_DIR/memcached-2.2.0.tgz
 
-[ ! -s $SRC_DIR/libmemcached-1.0.18.tar.gz ] && wget -c https://launchpad.net/libmemcached/1.0/1.0.18/+download/libmemcached-1.0.18.tar.gz -O $SRC_DIR/libmemcached-1.0.18.tar.gz
+[ ! -s $SRC_DIR/libmemcached-1.0.18.tar.gz ] && wget --no-check-certificate -c https://launchpad.net/libmemcached/1.0/1.0.18/+download/libmemcached-1.0.18.tar.gz -O $SRC_DIR/libmemcached-1.0.18.tar.gz
 
 [ ! -s $SRC_DIR/memcache-2.2.7.tgz ] && wget -c http://pecl.php.net/get/memcache-2.2.7.tgz -O $SRC_DIR/memcache-2.2.7.tgz
 
 cd $SRC_DIR
-tar zxf memcached-1.4.18.tar.gz
-cd memcached-1.4.18
+tar zxf memcached-1.4.20.tar.gz
+cd memcached-1.4.20
 ./configure --prefix=/usr/local/memcached
 make && make install
 
 ln -s /usr/local/memcached/bin/memcached /usr/bin/memcached
 
-cp $PWD_DIR/conf/memcached /etc/init.d/memcached
-chmod +x /etc/init.d/memcached
-chkconfig --add memcached
-chkconfig memcached on
+if [ -f /etc/redhat-release ]; then
+    cp $PWD_DIR/conf/memcached-centos /etc/init.d/memcached
+    chmod +x /etc/init.d/memcached
+    chkconfig --add memcached
+    chkconfig memcached on
+else
+    cp $PWD_DIR/conf/memcached-debian /etc/init.d/memcached
+    chmod +x /etc/init.d/memcached
+    update-rc.d memcached defaults
+fi
 
 service memcached start
 

@@ -15,12 +15,14 @@
 # Changed: 放弃CentOS 5下安装OpenLiteSpeed, 问题多多
 # Updated: 2014-04-25
 # Changed: 更新nginx版本到1.6.0
+# Updated: 2014-04-29
+# Changed: 增加Debian支持
+# Updated: 2014-05-07
+# Changed: 去除SPDY支持, 避免安装失败
 
 [ "$jemalloc_install" == "y" ] && COMMAND="--with-ld-opt='-ljemalloc'"
 
 [ ! -s $SRC_DIR/nginx-1.6.0.tar.gz ] && wget -c http://nginx.org/download/nginx-1.6.0.tar.gz -O $SRC_DIR/nginx-1.6.0.tar.gz
-
-sed -i 's/<autoUpdateInterval>/<useIpInProxyHeader>1<\/useIpInProxyHeader>\n    &/' /usr/local/lsws/conf/httpd_config.xml
 
 cd $SRC_DIR
 tar zxf nginx-1.6.0.tar.gz
@@ -159,10 +161,16 @@ fi
 [ "$cpu_num" == 6 ] && sed -i "s/worker_processes 1;/worker_processes 6;\nworker_cpu_affinity 100000 010000 001000 000100 000010 000001;/g" /usr/local/nginx/conf/nginx.conf
 [ "$cpu_num" == 8 ] && sed -i "s/worker_processes 1;/worker_processes 8;\nworker_cpu_affinity 10000000 01000000 00100000 00010000 00001000 00000100 00000010 00000001;/g" /usr/local/nginx/conf/nginx.conf
 
-cp $PWD_DIR/conf/nginx /etc/init.d/nginx
-chmod +x /etc/init.d/nginx
-chkconfig --add nginx
-chkconfig nginx on
+if [ -f /etc/redhat-release ]; then
+    cp $PWD_DIR/conf/nginx-centos /etc/init.d/nginx
+    chmod +x /etc/init.d/nginx
+    chkconfig --add nginx
+    chkconfig nginx on
+else
+    cp $PWD_DIR/conf/nginx-debian /etc/init.d/nginx
+    chmod +x /etc/init.d/nginx
+    update-rc.d nginx defaults
+fi
 
 service lsws restart
 service nginx start

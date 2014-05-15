@@ -18,6 +18,8 @@
 # Changed: 修复CentOS 5下安装OpenLiteSpeed问题
 # Updated: 2014-04-19
 # Changed: 修改Zend Opcache文件名为opcache.sh, 更正openssl升级条件
+# Updated: 2014-04-29
+# Changed: 更正IP获取方式，确保IP获取正确
 
 #define var
 VERSION="0.4"
@@ -45,7 +47,7 @@ echo -e "\033[32mFor more information please visit http://llnmp.com/ or http://s
 echo "====================================================================="
 
 #check main ip address
-IP=`ifconfig | grep 'inet addr:' | grep -v '127.0.0.1' | cut -d: -f2 | awk '{print $1}' | sed 1q`
+IP=`ifconfig | grep 'inet addr:' | grep -v '127.0.*' | cut -d: -f2 | awk '{print $1}' | sed 1q`
 while :
 do
     read -p "Is $IP your main ip?[y/n]: " right_ip

@@ -6,6 +6,8 @@
 #
 # Version: Ver 0.4
 # Created: 2014-03-31
+# Updated: 2014-04-29
+# Changed: 增加Debian支持
 
 useradd -M -s /sbin/nologin mysql
 rm -f /etc/my.cnf
@@ -37,8 +39,12 @@ make -j $cpu_num && make install
 
 cp support-files/mysql.server /etc/init.d/mysqld
 chmod +x /etc/init.d/mysqld
-chkconfig --add mysqld
-chkconfig mysqld on
+if [ -f /etc/redhat-release ]; then
+    chkconfig --add mysqld
+    chkconfig mysqld on
+else
+    update-rc.d mysqld defaults
+fi
 
 cat > /etc/my.cnf <<EOF
 [client]
@@ -189,6 +195,11 @@ EOF
 rm -f /tmp/mysql_sec_script
 
 bit=$(getconf LONG_BIT)
-[ "$bit" == "64" ] && ln -s /usr/local/mysql/lib/libmysqlclient.so.18 /usr/lib64 || ln -s /usr/local/mysql/lib/libmysqlclient.so.18 /usr/lib
+if [ "$bit" == "64" ]; then
+    [ ! -f /usr/lib64/ ] && mkdir -p /usr/lib64/
+    ln -s /usr/local/mysql/lib/libmysqlclient.so.18 /usr/lib64/
+else
+    ln -s /usr/local/mysql/lib/libmysqlclient.so.18 /usr/lib/
+fi
 
 service mysqld restart

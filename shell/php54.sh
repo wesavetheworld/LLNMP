@@ -12,15 +12,19 @@
 # Changed: 修复安装出错问题, 去除php-litespeed, 将make clean移到前面
 # Updated: 2014-04-18
 # Changed: 更新php版本到5.4.27
+# Updated: 2014-05-02
+# Changed: 更新PHP版本到5.4.28
+# Updated: 2014-05-09
+# Changed: 更新数据库驱动为mysqlnd驱动
 
-[ ! -s $SRC_DIR/php-5.4.27.tar.gz ] && wget -c http://www.php.net/distributions/php-5.4.27.tar.gz -O $SRC_DIR/php-5.4.27.tar.gz
+[ ! -s $SRC_DIR/php-5.4.28.tar.gz ] && wget -c http://www.php.net/distributions/php-5.4.28.tar.gz -O $SRC_DIR/php-5.4.28.tar.gz
 
 [ ! -s /usr/local/lsws/phpbuild ] && mkdir -p /usr/local/lsws/phpbuild
 
 cd $SRC_DIR
-tar zxf php-5.4.27.tar.gz
-mv $SRC_DIR/php-5.4.27 /usr/local/lsws/phpbuild
-cd /usr/local/lsws/phpbuild/php-5.4.27
+tar zxf php-5.4.28.tar.gz
+mv $SRC_DIR/php-5.4.28 /usr/local/lsws/phpbuild
+cd /usr/local/lsws/phpbuild/php-5.4.28
 
 make clean
 touch ac*
@@ -28,9 +32,11 @@ rm -rf autom4te.*
 
 if [ `getconf LONG_BIT` == 64 ]; then
     ln -s /usr/local/mysql/lib /usr/local/mysql/lib64
-    ./configure '--disable-fileinfo' '--prefix=/usr/local/lsws/lsphp5' '--with-libdir=lib64' '--with-pdo-mysql=/usr/local/mysql/bin/mysql_config' '--with-mysql=/usr/local/mysql' '--with-mysqli=/usr/local/mysql/bin/mysql_config' '--with-zlib' '--with-gd' '--enable-shmop' '--enable-sockets' '--enable-sysvsem' '--enable-sysvshm' '--enable-magic-quotes' '--enable-mbstring' '--with-iconv' '--with-curl' '--with-curlwrappers' '--with-mcrypt' '--with-mhash' '--with-openssl' '--with-freetype-dir=/usr/lib' '--with-jpeg-dir=/usr/lib' '--with-png-dir' '--with-libxml-dir=/usr' '--enable-xml' '--disable-rpath' '--enable-mbregex' '--enable-gd-native-ttf' '--enable-pcntl' '--with-ldap' '--with-ldap-sasl' '--with-xmlrpc' '--enable-zip' '--enable-inline-optimization' '--enable-soap' '--enable-ftp' '--disable-debug' '--with-gettext' '--enable-bcmath' '--with-litespeed'
+    [ ! -f /etc/redhat-release ] && ln -fs /usr/lib/x86_64-linux-gnu/libldap.so /usr/lib64/libldap.so
+    ./configure '--disable-fileinfo' '--prefix=/usr/local/lsws/lsphp5' '--with-libdir=lib64' '--with-pdo-mysql=mysqlnd' '--with-mysql=mysqlnd' '--with-mysqli=mysqlnd' '--with-zlib' '--with-gd' '--enable-shmop' '--enable-sockets' '--enable-sysvsem' '--enable-sysvshm' '--enable-magic-quotes' '--enable-mbstring' '--with-iconv' '--with-curl' '--with-curlwrappers' '--with-mcrypt' '--with-mhash' '--with-openssl' '--with-freetype-dir=/usr/lib' '--with-jpeg-dir=/usr/lib' '--with-png-dir' '--with-libxml-dir=/usr' '--enable-xml' '--disable-rpath' '--enable-mbregex' '--enable-gd-native-ttf' '--enable-pcntl' '--with-ldap' '--with-ldap-sasl' '--with-xmlrpc' '--enable-zip' '--enable-inline-optimization' '--enable-soap' '--enable-ftp' '--disable-debug' '--with-gettext' '--enable-bcmath' '--with-litespeed'
 else
-    ./configure '--disable-fileinfo' '--prefix=/usr/local/lsws/lsphp5' '--with-pdo-mysql=/usr/local/mysql/bin/mysql_config' '--with-mysql=/usr/local/mysql' '--with-mysqli=/usr/local/mysql/bin/mysql_config' '--with-zlib' '--with-gd' '--enable-shmop' '--enable-sockets' '--enable-sysvsem' '--enable-sysvshm' '--enable-magic-quotes' '--enable-mbstring' '--with-iconv' '--enable-inline-optimization' '--with-curl' '--with-curlwrappers' '--with-mcrypt' '--with-mhash' '--with-openssl' '--with-freetype-dir=/usr/lib' '--with-jpeg-dir=/usr/lib' '--with-png-dir' '--with-libxml-dir=/usr' '--enable-xml' '--disable-rpath' '--enable-bcmath' '--enable-mbregex' '--enable-gd-native-ttf' '--enable-pcntl' '--with-ldap' '--with-ldap-sasl' '--with-xmlrpc' '--enable-zip' '--enable-soap' '--enable-ftp' '--disable-debug' '--with-gettext' '--with-litespeed'
+    [ ! -f /etc/redhat-release ] && ln -fs /usr/lib/i386-linux-gnu/libldap.so /usr/lib/libldap.so
+    ./configure '--disable-fileinfo' '--prefix=/usr/local/lsws/lsphp5' '--with-pdo-mysql=mysqlnd' '--with-mysql=mysqlnd' '--with-mysqli=mysqlnd' '--with-zlib' '--with-gd' '--enable-shmop' '--enable-sockets' '--enable-sysvsem' '--enable-sysvshm' '--enable-magic-quotes' '--enable-mbstring' '--with-iconv' '--enable-inline-optimization' '--with-curl' '--with-curlwrappers' '--with-mcrypt' '--with-mhash' '--with-openssl' '--with-freetype-dir=/usr/lib' '--with-jpeg-dir=/usr/lib' '--with-png-dir' '--with-libxml-dir=/usr' '--enable-xml' '--disable-rpath' '--enable-bcmath' '--enable-mbregex' '--enable-gd-native-ttf' '--enable-pcntl' '--with-ldap' '--with-ldap-sasl' '--with-xmlrpc' '--enable-zip' '--enable-soap' '--enable-ftp' '--disable-debug' '--with-gettext' '--with-litespeed'
 fi
 
 PLF=`uname -p`
@@ -45,17 +51,17 @@ fi
 make -j $cpu_num
 make -k install
 
-yes | cp -rf /usr/local/lsws/phpbuild/php-5.4.27/php.ini-production /usr/local/lsws/lsphp5/lib/php.ini
+yes | cp -rf /usr/local/lsws/phpbuild/php-5.4.28/php.ini-production /usr/local/lsws/lsphp5/lib/php.ini
 
 cd /usr/local/lsws/fcgi-bin
 
-[ -e "lsphp-5.4.27" ] && mv -s lsphp-5.4.27 lsphp-5.4.27.bak
+[ -e "lsphp-5.4.28" ] && mv -s lsphp-5.4.28 lsphp-5.4.28.bak
 
-cp /usr/local/lsws/phpbuild/php-5.4.27/sapi/litespeed/php lsphp-5.4.27
-ln -sf lsphp-5.4.27 lsphp5
-ln -sf lsphp-5.4.27 lsphp55
-chmod a+x lsphp-5.4.27
-chown -R lsadm:lsadm /usr/local/lsws/phpbuild/php-5.4.27
+cp /usr/local/lsws/phpbuild/php-5.4.28/sapi/litespeed/php lsphp-5.4.28
+ln -sf lsphp-5.4.28 lsphp5
+ln -sf lsphp-5.4.28 lsphp55
+chmod a+x lsphp-5.4.28
+chown -R lsadm:lsadm /usr/local/lsws/phpbuild/php-5.4.28
 
 sed -i 's/post_max_size = 8M/post_max_size = 50M/g' /usr/local/lsws/lsphp5/lib/php.ini
 sed -i 's/short_open_tag = Off/short_open_tag = On/g' /usr/local/lsws/lsphp5/lib/php.ini

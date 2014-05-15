@@ -6,6 +6,8 @@
 #
 # Version: Ver 0.4
 # Created: 2014-03-31
+# Updated: 2014-04-29
+# Changed: 增加Debian支持
 
 [ ! -s $SRC_DIR/pure-ftpd-1.0.36.tar.gz ] && wget -c http://download.pureftpd.org/pub/pure-ftpd/releases/pure-ftpd-1.0.36.tar.gz -O $SRC_DIR/pure-ftpd-1.0.36.tar.gz
 
@@ -114,8 +116,12 @@ EOF
 
 cp $PWD_DIR/conf/pureftpd /etc/init.d/pureftpd
 chmod +x /etc/init.d/pureftpd
-chkconfig --add pureftpd
-chkconfig pureftpd on
+if [ -f /etc/redhat-release ]; then
+    chkconfig --add pureftpd
+    chkconfig pureftpd on
+else
+    update-rc.d pureftpd defaults
+fi
 
 cd $SRC_DIR
 unzip User_manager_for-PureFTPd_v2.1_CN.zip
@@ -130,7 +136,7 @@ sed -i 's/127.0.0.1/localhost/g' /home/wwwroot/default/ftp/config.php
 
 iptables -I INPUT 5 -p tcp -m state --state NEW -m tcp --dport 21 -j ACCEPT
 iptables -I INPUT 6 -p tcp -m state --state NEW -m tcp --dport 20000:30000 -j ACCEPT
-service iptables save
+[ -f /etc/redhat-release ] && service iptables save || iptables-save > /etc/iptables.up.rules
 service iptables restart
 
 service pureftpd start

@@ -10,6 +10,8 @@
 # Changed: 更新缓存组件链接, 去除eAccelerator
 # Updated: 2014-04-18
 # Changed: 更新phpmyadmin版本到4.1.13
+# Updated: 2014-05-02
+# Changed: 更新phpmyadmin版本到4.1.14
 
 cp $PWD_DIR/conf/p.php /home/wwwroot/default/p.php
 cp $PWD_DIR/conf/llnmp.jpg /home/wwwroot/default/llnmp.jpg
@@ -27,10 +29,10 @@ cp $PWD_DIR/conf/index.html /home/wwwroot/default/index.html
 sed -i "s/{ip}/$IP/g" /home/wwwroot/default/index.html
 
 
-[ ! -s $SRC_DIR/phpMyAdmin-4.1.13-all-languages.tar.gz ] && wget -c http://downloads.sourceforge.net/project/phpmyadmin/phpMyAdmin/4.1.13/phpMyAdmin-4.1.13-all-languages.tar.gz -O $SRC_DIR/phpMyAdmin-4.1.13-all-languages.tar.gz
+[ ! -s $SRC_DIR/phpMyAdmin-4.1.14-all-languages.tar.gz ] && wget -c http://downloads.sourceforge.net/project/phpmyadmin/phpMyAdmin/4.1.14/phpMyAdmin-4.1.14-all-languages.tar.gz -O $SRC_DIR/phpMyAdmin-4.1.14-all-languages.tar.gz
 
 cd $SRC_DIR
-tar zxf phpMyAdmin-4.1.13-all-languages.tar.gz
-mv phpMyAdmin-4.1.13-all-languages /home/wwwroot/default/phpmyadmin/
+tar zxf phpMyAdmin-4.1.14-all-languages.tar.gz
+mv phpMyAdmin-4.1.14-all-languages /home/wwwroot/default/phpmyadmin/
 
 chown -R www:www /home/wwwroot/

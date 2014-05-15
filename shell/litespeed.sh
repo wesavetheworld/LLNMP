@@ -12,15 +12,17 @@
 # Changed: 更新LiteSpeed为4.2.9版本
 # Updated: 2014-04-13
 # Changed: 更改端口设定方式
+# Updated: 2014-05-15
+# Changed: 更新LiteSpeed到4.2.11
 
 useradd -M -s /sbin/nologin www
 mkdir -p /home/wwwroot/default
 
-[ ! -s $SRC_DIR/lsws-4.2.9-std-i386-linux.tar.gz ] && wget -c http://www.litespeedtech.com/packages/4.0/lsws-4.2.9-std-i386-linux.tar.gz -O $SRC_DIR/lsws-4.2.9-std-i386-linux.tar.gz
+[ ! -s $SRC_DIR/lsws-4.2.11-std-i386-linux.tar.gz ] && wget -c http://www.litespeedtech.com/packages/4.0/lsws-4.2.11-std-i386-linux.tar.gz -O $SRC_DIR/lsws-4.2.11-std-i386-linux.tar.gz
 
 cd $SRC_DIR
-tar zxf lsws-4.2.9-std-i386-linux.tar.gz
-cd lsws-4.2.9
+tar zxf lsws-4.2.11-std-i386-linux.tar.gz
+cd lsws-4.2.11
 rm -f LICENSE
 [ "$nginx_install" == "y" ] && port=8088 || port=80
 
@@ -43,6 +45,7 @@ expect \"server restarts\" { send \"Y\r\" }
 expect \"right now\" { send \"Y\r\" }
 "
 
+[ "$nginx_install" == "y" ] && sed -i 's/<autoUpdateInterval>/<useIpInProxyHeader>1<\/useIpInProxyHeader>\n    &/' /usr/local/lsws/conf/httpd_config.xml
 sed -i 's/<vhRoot>\$SERVER_ROOT\/DEFAULT\/<\/vhRoot>/<vhRoot>\/home\/wwwroot\/default\/<\/vhRoot>/g' /usr/local/lsws/conf/httpd_config.xml
 sed -i 's/<configFile>\$VH_ROOT\/conf\/vhconf\.xml<\/configFile>/<configFile>\$SERVER_ROOT\/conf\/default\.xml<\/configFile>/g' /usr/local/lsws/conf/httpd_config.xml
 

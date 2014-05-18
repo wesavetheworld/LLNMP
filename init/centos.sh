@@ -58,11 +58,3 @@ service crond restart
 if [ -f /etc/selinux/config ]; then
     sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
 fi
-
-#conf.tar.gz
-if [ ! -s $PWD_DIR/conf ]; then
-    wget -c $GET_URI/llnmp/conf.tar.gz -O $PWD_DIR/conf.tar.gz
-
-    cd $PWD_DIR
-    tar zxf conf.tar.gz
-fi

@@ -13,16 +13,13 @@
 
 [ ! -s $SRC_DIR/User_manager_for-PureFTPd_v2.1_CN.zip ] && wget -c http://soft.vpser.net/ftp/pure-ftpd/User_manager_for-PureFTPd_v2.1_CN.zip -O $SRC_DIR/User_manager_for-PureFTPd_v2.1_CN.zip
 
-cp /usr/local/mysql/lib/libmysqlclient* /usr/lib
-cp /usr/local/mysql/lib/mysql/*.* /usr/lib/
-[ -s /var/lib/mysql/mysql.sock ] && rm -f /var/lib/mysql/mysql.sock
-mkdir /var/lib/mysql
-ln -s /tmp/mysql.sock /var/lib/mysql/mysql.sock
+bit=$(getconf LONG_BIT)
+[ "$bit" == "64" ] && ln -s /usr/local/mysql/lib/libmysqlclient* /usr/lib64/ || ln -s /usr/local/mysql/lib/libmysqlclient* /usr/lib
 
 cd $SRC_DIR
 tar zxf pure-ftpd-1.0.36.tar.gz
 cd pure-ftpd-1.0.36
-./configure --prefix=/usr/local/pureftpd CFLAGS=-02 --with-mysql=/usr/local/mysql --with-quotas --with-cookie --with-virtualhosts --with-virtualroot --with-diraliases --with-sysquotas --with-ratios --with-altlog --with-paranoidmsg --with-shadow --with-welcomemsg --with-throttling --with-uploadscript --with-language=simplified-chinese
+./configure --prefix=/usr/local/pureftpd CFLAGS=-O2 --with-mysql=/usr/local/mysql --with-quotas --with-cookie --with-virtualhosts --with-virtualchroot --with-diraliases --with-sysquotas --with-ratios --with-altlog --with-paranoidmsg --with-shadow --with-welcomemsg  --with-throttling --with-uploadscript --with-language=english --with-rfc2640
 make -j $cpu_num && make install
 
 cp configuration-file/pure-config.pl /usr/local/pureftpd/sbin/

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<virtualHostConfig>
+  <docRoot>$VH_ROOT/</docRoot>
+  <adminEmails></adminEmails>
+  <enableGzip>1</enableGzip>
+  <logging>
+    <log>
+      <useServer>0</useServer>
+      <fileName>/home/wwwlogs/litespeed/default_error.log</fileName>
+      <logLevel>DEBUG</logLevel>
+      <rollingSize>10M</rollingSize>
+    </log>
+    <accessLog>
+      <useServer>0</useServer>
+      <fileName>/home/wwwlogs/litespeed/default_access.log</fileName>
+      <rollingSize>10M</rollingSize>
+      <keepDays>30</keepDays>
+      <compressArchive>0</compressArchive>
+    </accessLog>
+  </logging>
+  <index>
+    <useServer>0</useServer>
+    <indexFiles>index.html, index.htm, index.php</indexFiles>
+    <autoIndex></autoIndex>
+    <autoIndexURI></autoIndexURI>
+  </index>
+  <htAccess>
+    <allowOverride>31</allowOverride>
+    <accessFileName>.htaccess</accessFileName>
+  </htAccess>
+</virtualHostConfig>
+

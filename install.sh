@@ -27,7 +27,6 @@ PWD_DIR=`pwd`
 SRC_DIR=$PWD_DIR/src
 SH_DIR=$PWD_DIR/shell
 LOG_FILE=$PWD_DIR/install.log
-GET_URI="http://soft.shuang.ca"
 
 export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 
@@ -66,16 +65,16 @@ done
 
 #select web server
 echo "Please select a web server:"
-echo -e "\t\033[32m1\033[0m. Install LiteSpeed 4.2.9Std"
-echo -e "\t\033[32m2\033[0m. Install OpenLiteSpeed 1.2.9"
-read -p "(Default LiteSpeed 4.2.9Std): " web_select
+echo -e "\t\033[32m1\033[0m. Install LiteSpeed"
+echo -e "\t\033[32m2\033[0m. Install OpenLiteSpeed"
+read -p "(Default LiteSpeed): " web_select
 
 if [ "$web_select" != 1 -a "$web_select" != 2 ]; then
     web_select=1
 fi
 
-[ "$web_select" == 1 ] && webecho="LiteSpeed 4.2.9Std"
-[ "$web_select" == 2 ] && webecho="OpenLiteSpeed 1.2.9"
+[ "$web_select" == 1 ] && webecho="LiteSpeed"
+[ "$web_select" == 2 ] && webecho="OpenLiteSpeed"
 
 echo -e "\033[32m$webecho already installed!\033[0m"
 
@@ -106,16 +105,16 @@ fi
 
 if [ "$nginx_install" == "y" ]; then
     echo "Please select Nginx or Tengine:"
-    echo -e "\t\033[32m1\033[0m. Install Nginx 1.4.7"
-    echo -e "\t\033[32m2\033[0m. Install Tengine 2.0.2"
-    read -p "(Default Nginx 1.4.6): " nginx_select
+    echo -e "\t\033[32m1\033[0m. Install Nginx"
+    echo -e "\t\033[32m2\033[0m. Install Tengine"
+    read -p "(Default Nginx): " nginx_select
 
     if [ "$nginx_select" != 1 -a "$nginx_select" != 2 ]; then
         nginx_select=1
     fi
 
-    [ "$nginx_select" == 1 ] && nginxecho="Nginx 1.4.7"
-    [ "$nginx_select" == 2 ] && nginxecho="Tengine 2.0.2"
+    [ "$nginx_select" == 1 ] && nginxecho="Nginx"
+    [ "$nginx_select" == 2 ] && nginxecho="Tengine"
 
     echo -e "\033[32m$nginxecho already installed!\033[0m"
 fi
@@ -123,8 +122,8 @@ fi
 #select database server
 echo "Please select a Database Server:"
 echo -e "\t\033[32m1\033[0m. Install MySQL 5.5.37"
-echo -e "\t\033[32m2\033[0m. Install MariaDB 5.5.36"
-read -p "(Default MySQL 5.5.35): " db_select
+echo -e "\t\033[32m2\033[0m. Install MariaDB 5.5.37"
+read -p "(Default MySQL 5.5.37): " db_select
 
 if [ "$db_select" != 1 -a "$db_select" != 2 ]; then
     db_select=1
@@ -132,7 +131,7 @@ fi
 
 
 [ "$db_select" == 1 ] && dbecho="MySQL 5.5.37"
-[ "$db_select" == 2 ] && dbecho="MariaDB 5.5.36"
+[ "$db_select" == 2 ] && dbecho="MariaDB 5.5.37"
 
 echo -e "\033[32m$dbecho already installed!\033[0m"
 
@@ -145,8 +144,8 @@ echo -e "\033[32m$dbecho root password: $dbpass\033[0m"
 #select php version
 echo "Please select a PHP Version:"
 echo -e "\t\033[32m1\033[0m. Install PHP 5.3.28"
-echo -e "\t\033[32m2\033[0m. Install PHP 5.4.26"
-echo -e "\t\033[32m3\033[0m. Install PHP 5.5.10"
+echo -e "\t\033[32m2\033[0m. Install PHP 5.4.28"
+echo -e "\t\033[32m3\033[0m. Install PHP 5.5.12"
 read -p "(Default PHP 5.3.28): " php_select
 
 if [ "$php_select" != 1 -a "$php_select" != 2 -a "$php_select" != 3 ]; then
@@ -154,8 +153,8 @@ if [ "$php_select" != 1 -a "$php_select" != 2 -a "$php_select" != 3 ]; then
 fi
 
 [ "$php_select" == 1 ] && phpecho="PHP 5.3.28"
-[ "$php_select" == 2 ] && phpecho="PHP 5.4.26"
-[ "$php_select" == 3 ] && phpecho="PHP 5.5.10"
+[ "$php_select" == 2 ] && phpecho="PHP 5.4.28"
+[ "$php_select" == 3 ] && phpecho="PHP 5.5.12"
 
 echo -e "\033[32m$phpecho already installed!\033[0m"
 
@@ -168,9 +167,9 @@ fi
 
 if [ "$cache_install" == "y" ]; then
     echo "Please select a opcode cache of the PHP:"
-    echo -e "\t\033[32m1\033[0m. Install Zend Opcache 7.0.3"
-    echo -e "\t\033[32m2\033[0m. Install APCU 4.0.4"
-    echo -e "\t\033[32m3\033[0m. Install XCache 3.1.0"
+    echo -e "\t\033[32m1\033[0m. Install Zend Opcache"
+    echo -e "\t\033[32m2\033[0m. Install APCU"
+    echo -e "\t\033[32m3\033[0m. Install XCache"
     read -p "Please input a number 1,2,3(Default 1): " cache_select
 
     if [ "$cache_select" != 1 -a "$cache_select" != 2 -a "$cache_select" != 3 ]; then
@@ -185,9 +184,9 @@ if [ "$cache_install" == "y" ]; then
         done
     fi
 
-    [ "$cache_select" == 1 ] && echo -e "\033[32mZend Opcache 7.0.3 already installed!\033[0m"
-    [ "$cache_select" == 2 ] && echo -e "\033[32mAPCU 4.0.4 already installed!\033[0m"
-    [ "$cache_select" == 3 ] && echo -e "\033[32mXCache 3.1.0 already installed!\033[0m"
+    [ "$cache_select" == 1 ] && echo -e "\033[32mZend Opcache already installed!\033[0m"
+    [ "$cache_select" == 2 ] && echo -e "\033[32mAPCU already installed!\033[0m"
+    [ "$cache_select" == 3 ] && echo -e "\033[32mXCache already installed!\033[0m"
 
     if [ "$php_select" != 3 ]; then
         read -p "Do you want install Zend Guard Loader?(Default y)[y/n]: " zend_install
@@ -207,7 +206,7 @@ if [ "$redis_install" != "y" -a "$redis_install" != "n" ]; then
     redis_install="y"
 fi
 
-[ "$redis_install" == "y" ] && echo -e "\033[32mRedis 2.8.8 already installed!\033[0m"
+[ "$redis_install" == "y" ] && echo -e "\033[32mRedis already installed!\033[0m"
 
 #install memcache
 read -p "Do you want install memcached?(Default y) [y/n]: " memcache_install
@@ -216,7 +215,7 @@ if [ "$memcache_install" != "y" -a "$memcache_install" != "n" ]; then
     memcache_install="y"
 fi
 
-[ "$memcache_install" == "y" ] && echo -e "\033[32mMemcached 1.4.17 already installed!\033[0m"
+[ "$memcache_install" == "y" ] && echo -e "\033[32mMemcached already installed!\033[0m"
 
 #install jemalloc
 read -p "Do you want to use jemalloc optimize Database and Web server?(Default y) [y/n]: " jemalloc_install
@@ -225,7 +224,7 @@ if [ "$jemalloc_install" != "y" -a "$jemalloc_install" != "n" ]; then
     jemalloc_install="y"
 fi
 
-[ "$jemalloc_install" == "y" ] && echo -e "\033[32mjemalloc 3.5.1 already installed!\033[0m"
+[ "$jemalloc_install" == "y" ] && echo -e "\033[32mjemalloc already installed!\033[0m"
 
 #install pureftpd
 read -p "Do you want install Pureftpd?(Default y) [y/n]: " pureftpd_install
@@ -243,7 +242,7 @@ if [ "$pureftpd_install" == "y" ]; then
     read -p "(Default password: llnmp.com): " mysqlftppwd
     [ -z "$mysqlftppwd" ] && mysqlftppwd="llnmp.com"
 
-    echo -e "\033[32mPureftpd 1.0.36 already installed!\033[0m"
+    echo -e "\033[32mPureftpd already installed!\033[0m"
 fi
 
 get_char() {

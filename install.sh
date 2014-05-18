@@ -42,7 +42,7 @@ echo -e "\033[32mLLNMP V$VERSION for CentOS/RedHat, Debian, Ubuntu Linux VPS Wri
 echo "====================================================================="
 echo -e "\033[32mA tool to auto-compile & install LiteSpeed(OpenLiteSpeed)+MySQL(MariaDB)+PHP on Linux\033[0m"
 echo ""
-echo -e "\033[32mFor more information please visit http://llnmp.com/ or http://shuang.ca/\033[0m"
+echo -e "\033[32mFor more information please visit http://shuang.ca/\033[0m"
 echo "====================================================================="
 
 #check main ip address
@@ -350,11 +350,14 @@ fi
 [ -s /usr/local/memcached ] && service memcached restart
 [ -s /usr/local/pureftpd ] && service pureftpd restart
 
+cp $PWD_DIR/conf/vhost.sh /root/vhost.sh
+chmod +x /root/vhost.sh
+
 echo "====================================================================="
 echo -e "\033[32mLLNMP V$VERSION for CentOS/RedHat, Debian, Ubuntu Linux VPS Written by Shuang.Ca\033[0m"
 echo "====================================================================="
 echo ""
-echo "For more information please visit http://llnmp.com/ or http://shuang.ca/"
+echo "For more information please visit http://shuang.ca/"
 echo ""
 echo "$webecho admin name: $webuser"
 echo "$webecho admin password: $webpass"

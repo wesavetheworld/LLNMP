@@ -12,7 +12,7 @@ echo -e "\033[32mLLNMP V$VERSION for CentOS/RedHat, Debian, Ubuntu Linux VPS Wri
 echo "====================================================================="
 echo -e "\033[32mA tool to auto-compile & install LiteSpeed(OpenLiteSpeed)+MySQL(MariaDB)+PHP on Linux\033[0m"
 echo ""
-echo -e "\033[32mFor more information please visit http://llnmp.com/ or http://shuang.ca/\033[0m"
+echo -e "\033[32mFor more information please visit http://shuang.ca/\033[0m"
 echo "====================================================================="
 
 #Domain name

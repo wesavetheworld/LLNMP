@@ -1,7 +1,6 @@
 #!/bin/bash
 #
 # Author: Shuang.Ca <ylqjgm@gmail.com>
-# Home: http://llnmp.com
 # Blog: http://shuang.ca
 #
 # Version: Ver 0.4
@@ -23,6 +22,8 @@
 # Changed: 去除SPDY支持, 避免安装失败
 # Updated: 2014-05-15
 # Changed: 更新Openlitespeed到1.3.1
+# Updated: 2014-05-19
+# Changed: 若安装nginx，限定OpenLiteSpeed仅开放本地访问
 
 useradd -M -s /sbin/nologin www
 mkdir -p /home/wwwroot/default
@@ -56,7 +57,10 @@ else
     make -j $cpu_num && make install
 fi
 
-[ "$nginx_install" == "y" ] && sed -i 's/<autoUpdateInterval>/<useIpInProxyHeader>1<\/useIpInProxyHeader>\n    &/' /usr/local/lsws/conf/httpd_config.xml
+if [ "$nginx_install" == "y" ]; then
+    sed -i 's/<autoUpdateInterval>/<useIpInProxyHeader>1<\/useIpInProxyHeader>\n    &/' /usr/local/lsws/conf/httpd_config.xml
+    sed -i 's/<address>*:$port<\/address>/<address>127.0.0.1:$port<\/address>/g' /usr/local/lsws/conf/httpd_config.xml
+fi
 sed -i 's/<vhRoot>\$SERVER_ROOT\/DEFAULT\/<\/vhRoot>/<vhRoot>\/home\/wwwroot\/default\/<\/vhRoot>/g' /usr/local/lsws/conf/httpd_config.xml
 sed -i 's/<configFile>\$VH_ROOT\/conf\/vhconf\.xml<\/configFile>/<configFile>\$SERVER_ROOT\/conf\/default\.xml<\/configFile>/g' /usr/local/lsws/conf/httpd_config.xml
 

@@ -1,4 +1,13 @@
 #!/bin/bash
+#
+# Author: Shuang.Ca <ylqjgm@gmail.com>
+# Home: http://llnmp.com
+# Blog: http://shuang.ca
+#
+# Version: Ver 0.4
+# Created: 2014-05-18
+# Updated: 2014-05-19
+# Changed: 修正Nginx无法显示图片、CSS等问题
 
 # Check if user is root
 if [ $(id -u) != "0" ]; then
@@ -132,6 +141,7 @@ chown -R lsadm:lsadm /usr/local/lsws/conf/$domain.xml
 if [ -s /usr/local/nginx ]; then
   if [ "$moredomain" != "" ]; then
     moredomain=$domain,$moredomain
+    moredomain=${moredomain//,/ }
   else
     moredomain=$domain
   fi
@@ -147,8 +157,8 @@ server {
     index index.html index.htm index.php;
     root /home/wwwroot/$domain;
 
-    error_log /home/wwwlogs/nginx/$domain_error.log;
-    access_log /home/wwwlogs/nginx/$domain_access.log;
+    error_log /home/wwwlogs/nginx/${domain}_error.log;
+    access_log /home/wwwlogs/nginx/${domain}_access.log;
 
     location / {
         try_files \$uri @litespeed;

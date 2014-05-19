@@ -14,6 +14,8 @@
 # Changed: 更改端口设定方式
 # Updated: 2014-05-15
 # Changed: 更新LiteSpeed到4.2.11
+# Updated: 2014-05-19
+# Changed: 若安装nginx，限定LiteSpeed仅开放本地访问
 
 useradd -M -s /sbin/nologin www
 mkdir -p /home/wwwroot/default
@@ -45,7 +47,10 @@ expect \"server restarts\" { send \"Y\r\" }
 expect \"right now\" { send \"Y\r\" }
 "
 
-[ "$nginx_install" == "y" ] && sed -i 's/<autoUpdateInterval>/<useIpInProxyHeader>1<\/useIpInProxyHeader>\n    &/' /usr/local/lsws/conf/httpd_config.xml
+if [ "$nginx_install" == "y" ]; then
+    sed -i 's/<autoUpdateInterval>/<useIpInProxyHeader>1<\/useIpInProxyHeader>\n    &/' /usr/local/lsws/conf/httpd_config.xml
+    sed -i 's/<address>*:$port<\/address>/<address>127.0.0.1:$port<\/address>/g' /usr/local/lsws/conf/httpd_config.xml
+fi
 sed -i 's/<vhRoot>\$SERVER_ROOT\/DEFAULT\/<\/vhRoot>/<vhRoot>\/home\/wwwroot\/default\/<\/vhRoot>/g' /usr/local/lsws/conf/httpd_config.xml
 sed -i 's/<configFile>\$VH_ROOT\/conf\/vhconf\.xml<\/configFile>/<configFile>\$SERVER_ROOT\/conf\/default\.xml<\/configFile>/g' /usr/local/lsws/conf/httpd_config.xml
 

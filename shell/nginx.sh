@@ -19,6 +19,8 @@
 # Changed: 增加Debian支持
 # Updated: 2014-05-07
 # Changed: 去除SPDY支持, 避免安装失败
+# Updated: 2014-05-19
+# Changed: 去除IP限定
 
 [ "$jemalloc_install" == "y" ] && COMMAND="--with-ld-opt='-ljemalloc'"
 
@@ -116,7 +118,7 @@ log_format default '\$remote_addr - \$remote_user [\$time_local] "\$request" '
     '"\$http_user_agent" \$http_x_forwarded_for';
 
 server {
-    listen $IP:80;
+    listen 80;
     server_name shuang.ca;
     index index.html index.htm index.php;
     root /home/wwwroot/default;

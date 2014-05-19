@@ -19,7 +19,7 @@
 # Updated: 2014-05-07
 # Changed: 去除SPDY支持, 避免安装失败
 # Updated: 2014-05-19
-# Changed: 去除IP限定
+# Changed: 去除主IP限定
 
 [ "$jemalloc_install" == "y" ] && COMMAND="--with-ld-opt='-ljemalloc'"
 

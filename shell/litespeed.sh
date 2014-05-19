@@ -15,7 +15,7 @@
 # Updated: 2014-05-15
 # Changed: 更新LiteSpeed到4.2.11
 # Updated: 2014-05-19
-# Changed: 若安装nginx，限定LiteSpeed仅开放本地访问
+# Changed: 若安装nginx，限定LiteSpeed仅本地访问
 
 useradd -M -s /sbin/nologin www
 mkdir -p /home/wwwroot/default

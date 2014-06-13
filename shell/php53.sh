@@ -14,6 +14,8 @@
 # Changed: 增加Debian支持
 # Updated: 2014-05-09
 # Changed: 更新数据库驱动为mysqlnd驱动
+# Updated: 2014-06-13
+# Changed: 修复Debian、Ubuntu下默认指向dash问题
 
 [ ! -s $SRC_DIR/php-5.3.28.tar.gz ] && wget -c http://www.php.net/distributions/php-5.3.28.tar.gz -O $SRC_DIR/php-5.3.28.tar.gz
 
@@ -36,7 +38,7 @@ rm -rf autom4te.*
 [ -f /etc/redhat-release ] && export PHP_AUTOCONF=/usr/bin/autoconf-2.13 || export PHP_AUTOCONF=/usr/bin/autoconf2.13
 ./buildconf --force
 
-if [ `getconf LONG_BIT` == 64 ]; then
+if [ `getconf LONG_BIT` = 64 ]; then
     ln -s /usr/local/mysql/lib /usr/local/mysql/lib64
     [ ! -f /etc/redhat-release ] && ln -fs /usr/lib/x86_64-linux-gnu/libldap.so /usr/lib64/libldap.so
     [ ! -z "`cat /etc/issue | grep Ubuntu`" ] && ln -fs /usr/lib/x86_64-linux-gnu/liblber* /usr/lib64/

@@ -8,6 +8,8 @@
 # Created: 2014-04-29
 # Updated: 2014-05-14
 # Changed: 修复Debian 7升级时需要手动配置libssl1.0.0
+# Updated: 2014-06-13
+# Changed: 修复Debian、Ubuntu下默认指向dash问题
 
 cat /etc/issue
 uname -a
@@ -25,7 +27,7 @@ apt-get -y update
 
 apt-get -fy install
 apt-get install -y build-essential libncurses5 libncurses5-dev libc6 libc6-dev wget flex re2c unzip bison gcc g++ autoconf patch make automake cmake expect ruby file bzip2 libmhash-dev libtool libjpeg8 libjpeg8-dev libpng12-0 libpng12-dev libxml2 libxml2-dev libmcrypt-dev curl libcurl3 libcurl4-openssl-dev libfreetype6 libfreetype6-dev libpcre3 libpcre3-dev libexpat1-dev libssl-dev libgeoip-dev zlib1g-dev libpng-dev openssl e2fsprogs libsasl2-dev libidn11 libidn11-dev libevent-dev ntpdate
-[ `getconf LONG_BIT` == "64" ] && apt-get install -y ia32-libs
+[ `getconf LONG_BIT` = "64" ] && apt-get install -y ia32-libs
 apt-get -y autoremove
 
 rm -rf /etc/localtime

@@ -10,6 +10,8 @@
 # Changed: 将安装内容分离出去, 实现模块化安装
 # Updated: 2014-04-08
 # Changed: 修复libmemcached安装失败问题
+# Updated: 2014-06-13
+# Changed: 修复Debian、Ubuntu下默认指向dash问题
 
 cat /etc/issue
 uname -a
@@ -19,14 +21,14 @@ echo -e "\nMemory is: ${MemTotal} MB"
 #epel
 centosversion=$(cat /etc/redhat-release | grep -o [0-9] | sed 1q)
 bit=$(getconf LONG_BIT)
-if [ "$centosversion" == "5" ]; then
-    if [ "$bit" == "64" ]; then
+if [ "$centosversion" = "5" ]; then
+    if [ "$bit" = "64" ]; then
         rpm -ivh http://dl.fedoraproject.org/pub/epel/5/x86_64/epel-release-5-4.noarch.rpm
     else
         rpm -ivh http://dl.fedoraproject.org/pub/epel/5/i386/epel-release-5-4.noarch.rpm
     fi
-elif [ "$centosversion" == "6" ]; then
-    if [ "$bit" == "64" ]; then
+elif [ "$centosversion" = "6" ]; then
+    if [ "$bit" = "64" ]; then
         rpm -ivh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
     else
         rpm -ivh http://dl.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
@@ -42,7 +44,7 @@ yum remove httpd* php* mysql-server mysql* php-mysql -y
 yum -y update
 yum -y install ncurses ncurses-devel glibc wget flex re2c unzip bison gcc gcc-c++ autoconf autoconf213 patch make automake cmake expect ruby file ntp bzip2 bzip2-devel diff* mhash-devel libtool libtool-libs libjpeg libjpeg-devel libpng libpng-devel libxml2 libxml2-devel libmcrypt-devel curl curl-devel freetype freetype-devel zlib zlib-devel libtool-ltdl-devel expat-devel pcre-devel geoip-devel openssl openssl-devel openldap-devel e2fsprogs e2fsprogs-devel krb5-devel libidn libidn-devel vixie-cron libevent libevent-devel
 
-[ "$bit" == "64" ] && yum -y install glibc.i686
+[ "$bit" = "64" ] && yum -y install glibc.i686
 
 yum clean all
 

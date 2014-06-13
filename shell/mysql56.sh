@@ -5,33 +5,28 @@
 # Blog: http://shuang.ca
 #
 # Version: Ver 0.4
-# Created: 2014-03-31
-# Updated: 2014-04-18
-# Changed: 更新mariadb版本到5.5.37
-# Updated: 2014-04-29
-# Changed: 增加Debian支持
+# Created: 2014-06-13
 
 useradd -M -s /sbin/nologin mysql
 rm -f /etc/my.cnf
 mkdir -p /data/mysql
 
-[ "$jemalloc_install" == "y" ] && COMMAND="-DCMAKE_EXE_LINKER_FLAGS='-ljemalloc'"
+[ "$jemalloc_install" = "y" ] && COMMAND="-DCMAKE_EXE_LINKER_FLAGS='-ljemalloc'"
 
-[ ! -f $SRC_DIR/mariadb-5.5.37.tar.gz ] && wget -c http://ftp.osuosl.org/pub/mariadb/mariadb-5.5.37/source/mariadb-5.5.37.tar.gz -O $SRC_DIR/mariadb-5.5.37.tar.gz
+[ ! -f $SRC_DIR/mysql-5.6.19.tar.gz ] && wget -c http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.19.tar.gz -O $SRC_DIR/mysql-5.6.19.tar.gz
 
 cd $SRC_DIR
-tar zxf mariadb-5.5.37.tar.gz
-cd mariadb-5.5.37
+tar zxf mysql-5.6.19.tar.gz
+cd mysql-5.6.19
 cmake -DCMAKE_INSTALL_PREFIX=/usr/local/mysql \
 -DMYSQL_DATADIR=/data/mysql \
--DWITH_ARIA_STORAGE_ENGINE=1 \
--DWITH_XTRADB_STORAGE_ENGINE=1 \
--DWITH_ARCHIVE_STORAGE_ENGINE=1 \
+-DSYSCONFDIR=/etc \
 -DWITH_INNOBASE_STORAGE_ENGINE=1 \
 -DWITH_PARTITION_STORAGE_ENGINE=1 \
--DWITH_FEDERATEDX_STORAGE_ENGINE=1 \
+-DWITH_FEDERATED_STORAGE_ENGINE=1 \
 -DWITH_BLACKHOLE_STORAGE_ENGINE=1 \
 -DWITH_MYISAM_STORAGE_ENGINE=1 \
+-DWITH_ARCHIVE_STORAGE_ENGINE=1 \
 -DWITH_READLINE=1 \
 -DENABLED_LOCAL_INFILE=1 \
 -DDEFAULT_CHARSET=utf8 \
@@ -67,7 +62,7 @@ server-id = 1
 
 skip-name-resolve
 #skip-networking
-back_log = 600
+back_log = 300
 
 max_connections = 1000
 max_connect_errors = 6000
@@ -86,6 +81,7 @@ key_buffer_size = 4M
 
 thread_cache_size = 8
 
+query_cache_type = 1
 query_cache_size = 8M
 query_cache_limit = 2M
 
@@ -198,7 +194,7 @@ EOF
 rm -f /tmp/mysql_sec_script
 
 bit=$(getconf LONG_BIT)
-if [ "$bit" == "64" ]; then
+if [ "$bit" = "64" ]; then
     [ ! -f /usr/lib64/ ] && mkdir -p /usr/lib64/
     ln -s /usr/local/mysql/lib/libmysqlclient.so.18 /usr/lib64/
 else

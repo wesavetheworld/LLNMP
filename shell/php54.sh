@@ -16,21 +16,24 @@
 # Changed: 更新PHP版本到5.4.28
 # Updated: 2014-05-09
 # Changed: 更新数据库驱动为mysqlnd驱动
+# Updated: 2014-06-13
+# Changed: 修复Debian、Ubuntu下默认指向dash问题
+# Changed: 升级PHP到5.4.29
 
-[ ! -s $SRC_DIR/php-5.4.28.tar.gz ] && wget -c http://www.php.net/distributions/php-5.4.28.tar.gz -O $SRC_DIR/php-5.4.28.tar.gz
+[ ! -s $SRC_DIR/php-5.4.29.tar.gz ] && wget -c http://www.php.net/distributions/php-5.4.29.tar.gz -O $SRC_DIR/php-5.4.29.tar.gz
 
 [ ! -s /usr/local/lsws/phpbuild ] && mkdir -p /usr/local/lsws/phpbuild
 
 cd $SRC_DIR
-tar zxf php-5.4.28.tar.gz
-mv $SRC_DIR/php-5.4.28 /usr/local/lsws/phpbuild
-cd /usr/local/lsws/phpbuild/php-5.4.28
+tar zxf php-5.4.29.tar.gz
+mv $SRC_DIR/php-5.4.29 /usr/local/lsws/phpbuild
+cd /usr/local/lsws/phpbuild/php-5.4.29
 
 make clean
 touch ac*
 rm -rf autom4te.*
 
-if [ `getconf LONG_BIT` == 64 ]; then
+if [ `getconf LONG_BIT` = 64 ]; then
     ln -s /usr/local/mysql/lib /usr/local/mysql/lib64
     [ ! -f /etc/redhat-release ] && ln -fs /usr/lib/x86_64-linux-gnu/libldap.so /usr/lib64/libldap.so
     [ ! -z "`cat /etc/issue | grep Ubuntu`" ] && ln -fs /usr/lib/x86_64-linux-gnu/liblber* /usr/lib64/
@@ -53,17 +56,17 @@ fi
 make -j $cpu_num
 make -k install
 
-yes | cp -rf /usr/local/lsws/phpbuild/php-5.4.28/php.ini-production /usr/local/lsws/lsphp5/lib/php.ini
+yes | cp -rf /usr/local/lsws/phpbuild/php-5.4.29/php.ini-production /usr/local/lsws/lsphp5/lib/php.ini
 
 cd /usr/local/lsws/fcgi-bin
 
-[ -e "lsphp-5.4.28" ] && mv -s lsphp-5.4.28 lsphp-5.4.28.bak
+[ -e "lsphp-5.4.29" ] && mv -s lsphp-5.4.29 lsphp-5.4.29.bak
 
-cp /usr/local/lsws/phpbuild/php-5.4.28/sapi/litespeed/php lsphp-5.4.28
-ln -sf lsphp-5.4.28 lsphp5
-ln -sf lsphp-5.4.28 lsphp55
-chmod a+x lsphp-5.4.28
-chown -R lsadm:lsadm /usr/local/lsws/phpbuild/php-5.4.28
+cp /usr/local/lsws/phpbuild/php-5.4.28/sapi/litespeed/php lsphp-5.4.29
+ln -sf lsphp-5.4.29 lsphp5
+ln -sf lsphp-5.4.29 lsphp55
+chmod a+x lsphp-5.4.29
+chown -R lsadm:lsadm /usr/local/lsws/phpbuild/php-5.4.29
 
 sed -i 's/post_max_size = 8M/post_max_size = 50M/g' /usr/local/lsws/lsphp5/lib/php.ini
 sed -i 's/short_open_tag = Off/short_open_tag = On/g' /usr/local/lsws/lsphp5/lib/php.ini

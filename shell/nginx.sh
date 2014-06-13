@@ -21,8 +21,10 @@
 # Changed: 去除SPDY支持, 避免安装失败
 # Updated: 2014-05-19
 # Changed: 去除主IP限定
+# Updated: 2014-06-13
+# Changed: 修复Debian、Ubuntu下默认指向dash问题
 
-[ "$jemalloc_install" == "y" ] && COMMAND="--with-ld-opt='-ljemalloc'"
+[ "$jemalloc_install" = "y" ] && COMMAND="--with-ld-opt='-ljemalloc'"
 
 [ ! -s $SRC_DIR/nginx-1.6.0.tar.gz ] && wget -c http://nginx.org/download/nginx-1.6.0.tar.gz -O $SRC_DIR/nginx-1.6.0.tar.gz
 
@@ -152,16 +154,16 @@ server {
 EOF
 
 bit=$(getconf LONG_BIT)
-if [ "$bit" == "64" ]; then
+if [ "$bit" = "64" ]; then
     ln -s /usr/local/lib/libpcre.so.1 /lib64
 else
     ln -s /lib/libpcre.so.0.0.1 /lib/libpcre.so.1
 fi
 
-[ "$cpu_num" == 2 ] && sed -i "s/worker_processes 1;/worker_processes 2;\nworker_cpu_affinity 10 01;/g" /usr/local/nginx/conf/nginx.conf
-[ "$cpu_num" == 4 ] && sed -i "s/worker_processes 1;/worker_processes 4;\nworker_cpu_affinity 1000 0100 0010 0001;/g" /usr/local/nginx/conf/nginx.conf
-[ "$cpu_num" == 6 ] && sed -i "s/worker_processes 1;/worker_processes 6;\nworker_cpu_affinity 100000 010000 001000 000100 000010 000001;/g" /usr/local/nginx/conf/nginx.conf
-[ "$cpu_num" == 8 ] && sed -i "s/worker_processes 1;/worker_processes 8;\nworker_cpu_affinity 10000000 01000000 00100000 00010000 00001000 00000100 00000010 00000001;/g" /usr/local/nginx/conf/nginx.conf
+[ "$cpu_num" = 2 ] && sed -i "s/worker_processes 1;/worker_processes 2;\nworker_cpu_affinity 10 01;/g" /usr/local/nginx/conf/nginx.conf
+[ "$cpu_num" = 4 ] && sed -i "s/worker_processes 1;/worker_processes 4;\nworker_cpu_affinity 1000 0100 0010 0001;/g" /usr/local/nginx/conf/nginx.conf
+[ "$cpu_num" = 6 ] && sed -i "s/worker_processes 1;/worker_processes 6;\nworker_cpu_affinity 100000 010000 001000 000100 000010 000001;/g" /usr/local/nginx/conf/nginx.conf
+[ "$cpu_num" = 8 ] && sed -i "s/worker_processes 1;/worker_processes 8;\nworker_cpu_affinity 10000000 01000000 00100000 00010000 00001000 00000100 00000010 00000001;/g" /usr/local/nginx/conf/nginx.conf
 
 if [ -f /etc/redhat-release ]; then
     cp $PWD_DIR/conf/nginx-centos /etc/init.d/nginx

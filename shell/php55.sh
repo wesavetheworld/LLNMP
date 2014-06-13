@@ -14,22 +14,24 @@
 # Changed: 更新php版本到5.5.12
 # Updated: 2014-05-09
 # Changed: 更新数据库驱动为mysqlnd驱动
+# Updated: 2014-06-13
+# Changed: 修复Debian、Ubuntu下默认指向dash问题
 
-[ ! -s $SRC_DIR/php-5.5.12.tar.gz ] && wget -c http://www.php.net/distributions/php-5.5.12.tar.gz -O $SRC_DIR/php-5.5.12.tar.gz
+[ ! -s $SRC_DIR/php-5.5.13.tar.gz ] && wget -c http://www.php.net/distributions/php-5.5.13.tar.gz -O $SRC_DIR/php-5.5.13.tar.gz
 
 [ ! -s /usr/local/lsws/phpbuild ] && mkdir -p /usr/local/lsws/phpbuild
 
 cd $SRC_DIR
-tar zxf php-5.5.12.tar.gz
-mv $SRC_DIR/php-5.5.12 /usr/local/lsws/phpbuild
-cd /usr/local/lsws/phpbuild/php-5.5.12
+tar zxf php-5.5.13.tar.gz
+mv $SRC_DIR/php-5.5.13 /usr/local/lsws/phpbuild
+cd /usr/local/lsws/phpbuild/php-5.5.13
 
 make clean
 touch ac*
 rm -rf autom4te.*
 
-[ "$cache_select" == 3 ] && COMMAND='--enable-opcache' || COMMAND='--disable-opcache'
-if [ `getconf LONG_BIT` == 64 ]; then
+[ "$cache_select" = 3 ] && COMMAND='--enable-opcache' || COMMAND='--disable-opcache'
+if [ `getconf LONG_BIT` = 64 ]; then
     ln -s /usr/local/mysql/lib /usr/local/mysql/lib64
     [ ! -f /etc/redhat-release ] && ln -fs /usr/lib/x86_64-linux-gnu/libldap.so /usr/lib64/libldap.so
     [ ! -z "`cat /etc/issue | grep Ubuntu`" ] && ln -fs /usr/lib/x86_64-linux-gnu/liblber* /usr/lib64/
@@ -54,17 +56,17 @@ make -k install
 
 [ ! -s /usr/local/lsws/lsphp5/lib ] && mkdir -p /usr/local/lsws/lsphp5/lib
 
-yes | cp -rf /usr/local/lsws/phpbuild/php-5.5.12/php.ini-production /usr/local/lsws/lsphp5/lib/php.ini
+yes | cp -rf /usr/local/lsws/phpbuild/php-5.5.13/php.ini-production /usr/local/lsws/lsphp5/lib/php.ini
 
 cd /usr/local/lsws/fcgi-bin
 
-[ -e "lsphp-5.5.12" ] && mv -s lsphp-5.5.12 lsphp-5.5.12.bak
+[ -e "lsphp-5.5.13" ] && mv -s lsphp-5.5.13 lsphp-5.5.13.bak
 
-cp /usr/local/lsws/phpbuild/php-5.5.12/sapi/litespeed/php lsphp-5.5.12
-ln -sf lsphp-5.5.12 lsphp5
-ln -sf lsphp-5.5.12 lsphp55
-chmod a+x lsphp-5.5.12
-chown -R lsadm:lsadm /usr/local/lsws/phpbuild/php-5.5.12
+cp /usr/local/lsws/phpbuild/php-5.5.13/sapi/litespeed/php lsphp-5.5.13
+ln -sf lsphp-5.5.13 lsphp5
+ln -sf lsphp-5.5.13 lsphp55
+chmod a+x lsphp-5.5.13
+chown -R lsadm:lsadm /usr/local/lsws/phpbuild/php-5.5.13
 
 sed -i 's/post_max_size = 8M/post_max_size = 50M/g' /usr/local/lsws/lsphp5/lib/php.ini
 sed -i 's/short_open_tag = Off/short_open_tag = On/g' /usr/local/lsws/lsphp5/lib/php.ini
@@ -74,7 +76,7 @@ sed -i 's/disable_functions =.*/disable_functions = passthru,exec,system,chroot,
 sed -i 's/display_errors = On/display_errors = Off/g' /usr/local/lsws/lsphp5/lib/php.ini
 sed -i 's/expose_php = On/expose_php = Off/g' /usr/local/lsws/lsphp5/lib/php.ini
 
-if [ "$cache_select" == 3 ];then
+if [ "$cache_select" = 3 ];then
     sed -i 's@^\[opcache\]@[opcache]\nzend_extension=opcache.so@' /usr/local/lsws/lsphp5/lib/php.ini
     sed -i 's@^;opcache.enable=.*@opcache.enable=1@' /usr/local/lsws/lsphp5/lib/php.ini
     sed -i 's@^;opcache.memory_consumption.*@opcache.memory_consumption=128@' /usr/local/lsws/lsphp5/lib/php.ini

@@ -20,14 +20,17 @@
 # Changed: 去除SPDY支持, 避免安装失败
 # Updated: 2014-05-19
 # Changed: 去除主IP限定
+# Updated: 2014-06-13
+# Changed: 修复Debian、Ubuntu下默认指向dash问题
+# Changed: 升级Tengine到2.0.3
 
-[ "$jemalloc_install" == "y" ] && COMMAND="--with-ld-opt='-ljemalloc'"
+[ "$jemalloc_install" = "y" ] && COMMAND="--with-ld-opt='-ljemalloc'"
 
-[ ! -s $SRC_DIR/tengine-2.0.2.tar.gz ] && wget -c http://tengine.taobao.org/download/tengine-2.0.2.tar.gz -O $SRC_DIR/tengine-2.0.2.tar.gz
+[ ! -s $SRC_DIR/tengine-2.0.3.tar.gz ] && wget -c http://tengine.taobao.org/download/tengine-2.0.3.tar.gz -O $SRC_DIR/tengine-2.0.3.tar.gz
 
 cd $SRC_DIR
-tar zxf tengine-2.0.2.tar.gz
-cd tengine-2.0.2
+tar zxf tengine-2.0.3.tar.gz
+cd tengine-2.0.3
 
 sed -i 's@CFLAGS="$CFLAGS -g"@#CFLAGS="$CFLAGS -g"@' auto/cc/gcc
 
@@ -156,7 +159,7 @@ server {
 EOF
 
 bit=$(getconf LONG_BIT)
-if [ "$bit" == "64" ]; then
+if [ "$bit" = "64" ]; then
     ln -s /usr/local/lib/libpcre.so.1 /lib64
 else
     ln -s /lib/libpcre.so.0.0.1 /lib/libpcre.so.1

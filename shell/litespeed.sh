@@ -16,17 +16,20 @@
 # Changed: 更新LiteSpeed到4.2.11
 # Updated: 2014-05-19
 # Changed: 若安装nginx，限定LiteSpeed仅本地访问
+# Updated: 2014-06-13
+# Changed: 修复Debian、Ubuntu下默认指向dash问题
+# Changed: 升级LiteSpeed到4.2.12
 
 useradd -M -s /sbin/nologin www
 mkdir -p /home/wwwroot/default
 
-[ ! -s $SRC_DIR/lsws-4.2.11-std-i386-linux.tar.gz ] && wget -c http://www.litespeedtech.com/packages/4.0/lsws-4.2.11-std-i386-linux.tar.gz -O $SRC_DIR/lsws-4.2.11-std-i386-linux.tar.gz
+[ ! -s $SRC_DIR/lsws-4.2.12-std-i386-linux.tar.gz ] && wget -c http://www.litespeedtech.com/packages/4.0/lsws-4.2.12-std-i386-linux.tar.gz -O $SRC_DIR/lsws-4.2.12-std-i386-linux.tar.gz
 
 cd $SRC_DIR
-tar zxf lsws-4.2.11-std-i386-linux.tar.gz
-cd lsws-4.2.11
+tar zxf lsws-4.2.12-std-i386-linux.tar.gz
+cd lsws-4.2.12
 rm -f LICENSE
-[ "$nginx_install" == "y" ] && port=8088 || port=80
+[ "$nginx_install" = "y" ] && port=8088 || port=80
 
 expect -c "
 spawn ./install.sh
@@ -47,7 +50,7 @@ expect \"server restarts\" { send \"Y\r\" }
 expect \"right now\" { send \"Y\r\" }
 "
 
-if [ "$nginx_install" == "y" ]; then
+if [ "$nginx_install" = "y" ]; then
     sed -i 's/<autoUpdateInterval>/<useIpInProxyHeader>1<\/useIpInProxyHeader>\n    &/' /usr/local/lsws/conf/httpd_config.xml
     sed -i 's/<address>*:$port<\/address>/<address>127.0.0.1:$port<\/address>/g' /usr/local/lsws/conf/httpd_config.xml
 fi

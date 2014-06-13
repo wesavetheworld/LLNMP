@@ -8,13 +8,15 @@
 # Created: 2014-03-31
 # Updated: 2014-04-29
 # Changed: 增加Debian支持
+# Updated: 2014-06-13
+# Changed: 修复Debian、Ubuntu下默认指向dash问题
 
 [ ! -s $SRC_DIR/pure-ftpd-1.0.36.tar.gz ] && wget -c http://download.pureftpd.org/pub/pure-ftpd/releases/pure-ftpd-1.0.36.tar.gz -O $SRC_DIR/pure-ftpd-1.0.36.tar.gz
 
 [ ! -s $SRC_DIR/User_manager_for-PureFTPd_v2.1_CN.zip ] && wget -c http://soft.vpser.net/ftp/pure-ftpd/User_manager_for-PureFTPd_v2.1_CN.zip -O $SRC_DIR/User_manager_for-PureFTPd_v2.1_CN.zip
 
 bit=$(getconf LONG_BIT)
-[ "$bit" == "64" ] && ln -s /usr/local/mysql/lib/libmysqlclient* /usr/lib64/ || ln -s /usr/local/mysql/lib/libmysqlclient* /usr/lib
+[ "$bit" = "64" ] && ln -s /usr/local/mysql/lib/libmysqlclient* /usr/lib64/ || ln -s /usr/local/mysql/lib/libmysqlclient* /usr/lib
 
 cd $SRC_DIR
 tar zxf pure-ftpd-1.0.36.tar.gz

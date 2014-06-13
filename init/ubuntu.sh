@@ -8,6 +8,8 @@
 # Created: 2014-05-11
 # Updated: 2014-05-17
 # Changed: Ubuntu 13.10开始去除ia32-libs, 修复此问题
+# Updated: 2014-06-13
+# Changed: 修复Debian、Ubuntu下默认指向dash问题
 
 cat /etc/issue
 uname -a
@@ -27,7 +29,7 @@ dpkg -P apache2 apache2-doc apache2-mpm-prefork apache2-utils apache2.2-common l
 apt-get -y update
 apt-get -y upgrade
 apt-get install -y build-essential libncurses5 libncurses5-dev libc6 libc6-dev wget flex re2c unzip bison gcc g++ autoconf patch make automake cmake expect ruby file bzip2 libmhash-dev libtool libjpeg8 libjpeg8-dev libpng12-0 libpng12-dev libxml2 libxml2-dev libmcrypt-dev curl libcurl3 libcurl4-openssl-dev libfreetype6 libfreetype6-dev libpcre3 libpcre3-dev libexpat1-dev libssl-dev libgeoip-dev zlib1g-dev libpng-dev openssl e2fsprogs libsasl2-dev libidn11 libidn11-dev libevent-dev ntpdate $COMMAND
-if [ `getconf LONG_BIT` == "64" ]; then
+if [ `getconf LONG_BIT` = "64" ]; then
     if [ ! -z "`cat /etc/issue | grep 13.10`" -o ! -z "`cat /etc/issue | grep 14`" ]; then
         echo "deb http://archive.ubuntu.com/ubuntu/ raring main restricted universe multiverse" > /etc/apt/sources.list.d/ia32.list
         apt-get -y update

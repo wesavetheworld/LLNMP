@@ -20,6 +20,8 @@
 # Changed: 修改Zend Opcache文件名为opcache.sh, 更正openssl升级条件
 # Updated: 2014-04-29
 # Changed: 更正IP获取方式，确保IP获取正确
+# Updated: 2014-06-13
+# Changed: 修复Debian、Ubuntu下默认指向dash问题
 
 #define var
 VERSION="0.4"
@@ -54,9 +56,9 @@ do
         echo -e "\033[31mInput error! Please only input y or n\033[0m"
     fi
 
-    [ "$right_ip" == "y" ] && break
+    [ "$right_ip" = "y" ] && break
 
-    if [ "$right_ip" == "n" ]; then
+    if [ "$right_ip" = "n" ]; then
         read -p "Please input your main ip: " new_ip
         IP=$new_ip
         [ ! -z "$IP" ] && break
@@ -73,8 +75,8 @@ if [ "$web_select" != 1 -a "$web_select" != 2 ]; then
     web_select=1
 fi
 
-[ "$web_select" == 1 ] && webecho="LiteSpeed"
-[ "$web_select" == 2 ] && webecho="OpenLiteSpeed"
+[ "$web_select" = 1 ] && webecho="LiteSpeed"
+[ "$web_select" = 2 ] && webecho="OpenLiteSpeed"
 
 echo -e "\033[32m$webecho already installed!\033[0m"
 
@@ -103,7 +105,7 @@ if [ "$nginx_install" != "y" -a "$nginx_install" != "n" ]; then
     nginx_install="y"
 fi
 
-if [ "$nginx_install" == "y" ]; then
+if [ "$nginx_install" = "y" ]; then
     echo "Please select Nginx or Tengine:"
     echo -e "\t\033[32m1\033[0m. Install Nginx"
     echo -e "\t\033[32m2\033[0m. Install Tengine"
@@ -113,25 +115,29 @@ if [ "$nginx_install" == "y" ]; then
         nginx_select=1
     fi
 
-    [ "$nginx_select" == 1 ] && nginxecho="Nginx"
-    [ "$nginx_select" == 2 ] && nginxecho="Tengine"
+    [ "$nginx_select" = 1 ] && nginxecho="Nginx"
+    [ "$nginx_select" = 2 ] && nginxecho="Tengine"
 
     echo -e "\033[32m$nginxecho already installed!\033[0m"
 fi
 
 #select database server
 echo "Please select a Database Server:"
-echo -e "\t\033[32m1\033[0m. Install MySQL 5.5.37"
-echo -e "\t\033[32m2\033[0m. Install MariaDB 5.5.37"
-read -p "(Default MySQL 5.5.37): " db_select
+echo -e "\t\033[32m1\033[0m. Install MySQL 5.5"
+echo -e "\t\033[32m2\033[0m. Install MySQL 5.6"
+echo -e "\t\033[32m3\033[0m. Install MariaDB 5.5"
+echo -e "\t\033[32m4\033[0m. Install MariaDB 10.0"
+read -p "(Default MySQL 5.5): " db_select
 
-if [ "$db_select" != 1 -a "$db_select" != 2 ]; then
+if [ "$db_select" != 1 -a "$db_select" != 2 -a "$db_select" != 3 -a "$db_select" != 4 ]; then
     db_select=1
 fi
 
 
-[ "$db_select" == 1 ] && dbecho="MySQL 5.5.37"
-[ "$db_select" == 2 ] && dbecho="MariaDB 5.5.37"
+[ "$db_select" = 1 ] && dbecho="MySQL 5.5"
+[ "$db_select" = 2 ] && dbecho="MySQL 5.6"
+[ "$db_select" = 3 ] && dbecho="MariaDB 5.5"
+[ "$db_select" = 4 ] && dbecho="MariaDB 10.0"
 
 echo -e "\033[32m$dbecho already installed!\033[0m"
 
@@ -143,18 +149,18 @@ echo -e "\033[32m$dbecho root password: $dbpass\033[0m"
 
 #select php version
 echo "Please select a PHP Version:"
-echo -e "\t\033[32m1\033[0m. Install PHP 5.3.28"
-echo -e "\t\033[32m2\033[0m. Install PHP 5.4.28"
-echo -e "\t\033[32m3\033[0m. Install PHP 5.5.12"
-read -p "(Default PHP 5.3.28): " php_select
+echo -e "\t\033[32m1\033[0m. Install PHP 5.3"
+echo -e "\t\033[32m2\033[0m. Install PHP 5.4"
+echo -e "\t\033[32m3\033[0m. Install PHP 5.5"
+read -p "(Default PHP 5.3): " php_select
 
 if [ "$php_select" != 1 -a "$php_select" != 2 -a "$php_select" != 3 ]; then
     php_select=1
 fi
 
-[ "$php_select" == 1 ] && phpecho="PHP 5.3.28"
-[ "$php_select" == 2 ] && phpecho="PHP 5.4.28"
-[ "$php_select" == 3 ] && phpecho="PHP 5.5.12"
+[ "$php_select" = 1 ] && phpecho="PHP 5.3"
+[ "$php_select" = 2 ] && phpecho="PHP 5.4"
+[ "$php_select" = 3 ] && phpecho="PHP 5.5"
 
 echo -e "\033[32m$phpecho already installed!\033[0m"
 
@@ -165,7 +171,7 @@ if [ "$cache_install" != "y" -a "$cache_install" != "n" ]; then
     cache_install="y"
 fi
 
-if [ "$cache_install" == "y" ]; then
+if [ "$cache_install" = "y" ]; then
     echo "Please select a opcode cache of the PHP:"
     echo -e "\t\033[32m1\033[0m. Install Zend Opcache"
     echo -e "\t\033[32m2\033[0m. Install APCU"
@@ -176,7 +182,7 @@ if [ "$cache_install" == "y" ]; then
         cache_select=1
     fi
 
-    if [ "$cache_select" == '3' ]; then
+    if [ "$cache_select" = '3' ]; then
         while :
         do
             read -p "Please input xcache admin password: " xcachepass
@@ -184,9 +190,9 @@ if [ "$cache_install" == "y" ]; then
         done
     fi
 
-    [ "$cache_select" == 1 ] && echo -e "\033[32mZend Opcache already installed!\033[0m"
-    [ "$cache_select" == 2 ] && echo -e "\033[32mAPCU already installed!\033[0m"
-    [ "$cache_select" == 3 ] && echo -e "\033[32mXCache already installed!\033[0m"
+    [ "$cache_select" = 1 ] && echo -e "\033[32mZend Opcache already installed!\033[0m"
+    [ "$cache_select" = 2 ] && echo -e "\033[32mAPCU already installed!\033[0m"
+    [ "$cache_select" = 3 ] && echo -e "\033[32mXCache already installed!\033[0m"
 
     if [ "$php_select" != 3 ]; then
         read -p "Do you want install Zend Guard Loader?(Default y)[y/n]: " zend_install
@@ -196,7 +202,7 @@ if [ "$cache_install" == "y" ]; then
         zend_install="y"
     fi
 
-    [ "$zend_install" == "y" ] && echo -e "\033[32mZend Guard Loader already installed!\033[0m"
+    [ "$zend_install" = "y" ] && echo -e "\033[32mZend Guard Loader already installed!\033[0m"
 fi
 
 #install redis
@@ -206,7 +212,7 @@ if [ "$redis_install" != "y" -a "$redis_install" != "n" ]; then
     redis_install="y"
 fi
 
-[ "$redis_install" == "y" ] && echo -e "\033[32mRedis already installed!\033[0m"
+[ "$redis_install" = "y" ] && echo -e "\033[32mRedis already installed!\033[0m"
 
 #install memcache
 read -p "Do you want install memcached?(Default y) [y/n]: " memcache_install
@@ -215,7 +221,7 @@ if [ "$memcache_install" != "y" -a "$memcache_install" != "n" ]; then
     memcache_install="y"
 fi
 
-[ "$memcache_install" == "y" ] && echo -e "\033[32mMemcached already installed!\033[0m"
+[ "$memcache_install" = "y" ] && echo -e "\033[32mMemcached already installed!\033[0m"
 
 #install jemalloc
 read -p "Do you want to use jemalloc optimize Database and Web server?(Default y) [y/n]: " jemalloc_install
@@ -224,7 +230,7 @@ if [ "$jemalloc_install" != "y" -a "$jemalloc_install" != "n" ]; then
     jemalloc_install="y"
 fi
 
-[ "$jemalloc_install" == "y" ] && echo -e "\033[32mjemalloc already installed!\033[0m"
+[ "$jemalloc_install" = "y" ] && echo -e "\033[32mjemalloc already installed!\033[0m"
 
 #install pureftpd
 read -p "Do you want install Pureftpd?(Default y) [y/n]: " pureftpd_install
@@ -233,7 +239,7 @@ if [ "$pureftpd_install" != "y" -a "$pureftpd_install" != "n" ]; then
     pureftpd_install="y"
 fi
 
-if [ "$pureftpd_install" == "y" ]; then
+if [ "$pureftpd_install" = "y" ]; then
     echo "Please input password of User manager:"
     read -p "(Default password: llnmp.com): " ftpmanagerpwd
     [ -z "$ftpmanagerpwd" ] && ftpmanagerpwd="llnmp.com"
@@ -279,63 +285,67 @@ else
 fi
 
 #jemalloc
-if [ "$jemalloc_install" == "y" ]; then
+if [ "$jemalloc_install" = "y" ]; then
     . $SH_DIR/jemalloc.sh 2>&1 | tee -a $LOG_FILE
 fi
 
 #database
-if [ "$db_select" == 2 ]; then
-    . $SH_DIR/mariadb.sh 2>&1 | tee -a $LOG_FILE
+if [ "$db_select" = 2 ]; then
+    . $SH_DIR/mysql56.sh 2>&1 | tee -a $LOG_FILE
+elif [ "$db_select" = 3 ]; then
+    . $SH_DIR/mariadb55.sh 2>&1 | tee -a $LOG_FILE
+elif [ "$db_select" = 4 ]; then
+    . $SH_DIR/mariadb10.sh 2>&1 | tee -a $LOG_FILE
 else
-    . $SH_DIR/mysql.sh 2>&1 | tee -a $LOG_FILE
+    . $SH_DIR/mysql55.sh 2>&1 | tee -a $LOG_FILE
 fi
 
 #litespeed
-if [ "$web_select" == 2 ]; then
+if [ "$web_select" = 2 ]; then
     . $SH_DIR/openlitespeed.sh 2>&1 | tee -a $LOG_FILE
 else
     . $SH_DIR/litespeed.sh 2>&1 | tee -a $LOG_FILE
 fi
 
 #nginx
-if [ "$nginx_install" == "y" ]; then
-    [ "$nginx_select" == 1 ] && . $SH_DIR/nginx.sh 2>&1 | tee -a $LOG_FILE
-    [ "$nginx_select" == 2 ] && . $SH_DIR/tengine.sh 2>&1 | tee -a $LOG_FILE
+if [ "$nginx_install" = "y" ]; then
+    [ "$nginx_select" = 1 ] && . $SH_DIR/nginx.sh 2>&1 | tee -a $LOG_FILE
+    [ "$nginx_select" = 2 ] && . $SH_DIR/tengine.sh 2>&1 | tee -a $LOG_FILE
 fi
 
 #php
-if [ "$php_select" == 2 ]; then
+if [ "$php_select" = 2 ]; then
     . $SH_DIR/php54.sh 2>&1 | tee -a $LOG_FILE
-elif [ "$php_select" == 3 ]; then
+elif [ "$php_select" = 3 ]; then
     . $SH_DIR/php55.sh 2>&1 | tee -a $LOG_FILE
 else
     . $SH_DIR/php53.sh 2>&1 | tee -a $LOG_FILE
 fi
 
 #redis
-if [ "$redis_install" == "y" ]; then
+if [ "$redis_install" = "y" ]; then
     . $SH_DIR/redis.sh 2>&1 | tee -a $LOG_FILE
 fi
 
 #memcache
-if [ "$memcache_install" == "y" ]; then
+if [ "$memcache_install" = "y" ]; then
     . $SH_DIR/memcached.sh 2>&1 | tee -a $LOG_FILE
 fi
 
 #cache
-if [ "$cache_install" == "y" ]; then
-    [ "$cache_select" == 1 ] && . $SH_DIR/opcache.sh 2>&1 | tee -a $LOG_FILE
-    [ "$cache_select" == 2 ] && . $SH_DIR/apcu.sh 2>&1 | tee -a $LOG_FILE
-    [ "$cache_select" == 3 ] && . $SH_DIR/xcache.sh 2>&1 | tee -a $LOG_FILE
+if [ "$cache_install" = "y" ]; then
+    [ "$cache_select" = 1 ] && . $SH_DIR/opcache.sh 2>&1 | tee -a $LOG_FILE
+    [ "$cache_select" = 2 ] && . $SH_DIR/apcu.sh 2>&1 | tee -a $LOG_FILE
+    [ "$cache_select" = 3 ] && . $SH_DIR/xcache.sh 2>&1 | tee -a $LOG_FILE
 fi
 
 #zend
-if [ "$zend_install" == "y" ]; then
+if [ "$zend_install" = "y" ]; then
     . $SH_DIR/zend.sh 2>&1 | tee -a $LOG_FILE
 fi
 
 #pureftpd
-if [ "$pureftpd_install" == "y" ]; then
+if [ "$pureftpd_install" = "y" ]; then
     . $SH_DIR/pureftpd.sh 2>&1 | tee -a $LOG_FILE
 fi
 
@@ -369,7 +379,7 @@ echo "Prober: http://$IP/p.php"
 echo ""
 echo "The path of some dirs:"
 echo "$webecho: /usr/local/lsws"
-if [ "$nginx_install" == "y" ]; then
+if [ "$nginx_install" = "y" ]; then
     echo "$nginxecho: /usr/local/nginx"
 fi
 echo "$dbecho: /usr/local/mysql"

@@ -24,14 +24,17 @@
 # Changed: 更新Openlitespeed到1.3.1
 # Updated: 2014-05-19
 # Changed: 若安装nginx，限定OpenLiteSpeed仅本地访问
+# Updated: 2014-06-13
+# Changed: 修复Debian、Ubuntu下默认指向dash问题
+# Changed: 升级OpenLiteSpeed到1.3.2
 
 useradd -M -s /sbin/nologin www
 mkdir -p /home/wwwroot/default
 
 centosversion=$(cat /etc/redhat-release | grep -o [0-9] | sed 1q)
-if [ "$centosversion" == "5" ]; then
+if [ "$centosversion" = "5" ]; then
     rpm -ivh http://rpms.litespeedtech.com/centos/litespeed-repo-1.1-1.el5.noarch.rpm
-    yum -y install openlitespeed-1.3.1
+    yum -y install openlitespeed-1.3.2
 
     chown -R www.www /usr/local/lsws/admin/cgid
     chown -R lsadm.www /usr/local/lsws/admin/tmp
@@ -40,24 +43,24 @@ if [ "$centosversion" == "5" ]; then
     sed -i 's/<group>nobody<\/group>/<group>www<\/group>/g' /usr/local/lsws/conf/httpd_config.xml
     sed -i 's/<secure>1<\/secure>/<secure>0<\/secure>/g' /usr/local/lsws/admin/conf/admin_config.xml
 
-    [ "$nginx_install" == "n" ] && sed -i 's/<address>*:8088<\/address>/<address>*:80<\/address>/g' /usr/local/lsws/conf/httpd_config.xml
+    [ "$nginx_install" = "n" ] && sed -i 's/<address>*:8088<\/address>/<address>*:80<\/address>/g' /usr/local/lsws/conf/httpd_config.xml
 
     PASS=`/usr/local/lsws/admin/fcgi-bin/admin_php -q /usr/local/lsws/admin/misc/htpasswd.php $webpass`
     echo "$webuser:$PASS" > /usr/local/lsws/admin/conf/htpasswd
 else
-    [ ! -s $SRC_DIR/openlitespeed-1.3.1.tgz ] && wget -c http://open.litespeedtech.com/packages/openlitespeed-1.3.1.tgz -O $SRC_DIR/openlitespeed-1.3.1.tgz
+    [ ! -s $SRC_DIR/openlitespeed-1.3.2.tgz ] && wget -c http://open.litespeedtech.com/packages/openlitespeed-1.3.2.tgz -O $SRC_DIR/openlitespeed-1.3.2.tgz
 
     cd $SRC_DIR
-    tar zxf openlitespeed-1.3.1.tgz
-    cd openlitespeed-1.3.1
+    tar zxf openlitespeed-1.3.2.tgz
+    cd openlitespeed-1.3.2
 
-    [ "$nginx_install" == "n" ] && sed -i "s/HTTP_PORT=8088/HTTP_PORT=80/g" dist/install.sh
+    [ "$nginx_install" = "n" ] && sed -i "s/HTTP_PORT=8088/HTTP_PORT=80/g" dist/install.sh
 
     ./configure --prefix=/usr/local/lsws --with-user=www --with-group=www --with-admin=$webuser --with-password=$webpass --with-email=$webemail --enable-adminssl=no
     make -j $cpu_num && make install
 fi
 
-if [ "$nginx_install" == "y" ]; then
+if [ "$nginx_install" = "y" ]; then
     sed -i 's/<autoUpdateInterval>/<useIpInProxyHeader>1<\/useIpInProxyHeader>\n    &/' /usr/local/lsws/conf/httpd_config.xml
     sed -i 's/<address>*:$port<\/address>/<address>127.0.0.1:$port<\/address>/g' /usr/local/lsws/conf/httpd_config.xml
 fi

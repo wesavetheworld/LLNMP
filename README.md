@@ -18,6 +18,6 @@ screen -S llnmp
 ./install.sh
 ```
 
-lnmp主页：[http://blog.linuxeye.com](http://blog.linuxeye.com)
-llnmp主页：[http://www.lovekk.org/llnmp](http://www.lovekk.org/llnmp)
+lnmp主页：[https://github.com/lj2007331/lnmp](https://github.com/lj2007331/lnmp)
+
 康康的博客：[http://www.lovekk.org](http://www.lovekk.org)

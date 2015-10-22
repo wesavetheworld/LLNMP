@@ -1,13 +1,23 @@
-LLNMPä¸€é”®å®‰è£…è„šæœ¬
-=================
+# LLNMP Ò»¼ü°²×°½Å±¾
 
-é€šè¿‡æœ¬è„šæœ¬å¯ä¸€é”®è‡ªåŠ¨ç¼–è¯‘å®‰è£… (Open)LiteSpeed + Nginx/Tengine + MySQL/MariaDB + PHP
+±¾½Å±¾×÷ÎªlnmpµÄÀ©Õ¹½Å±¾Ê¹ÓÃ£¬¿ÉÒ»¼ü°²×° (Open)LiteSpeed + Nginx/Tengine + MySQL/MariaDB + PHP
 
-æ”¯æŒç³»ç»Ÿ: CentOS 5+, Debian 6+, Ubuntu 12+ 32bit/64bit
+Ö§³ÖÏµÍ³£ºCentOS 5+, Debian 6+, Ubuntu 12+
 
-å®‰è£…æ–¹æ³•:
+Ê¹ÓÃ·½·¨£º
 
-    ./install.sh
+```
+yum -y install wget screen git # for CentOS/Redhat
+# apt-get -y install wget screen git # for Debian/Ubuntu
+wget -c http://mirrors.linuxeye.com/lnmp-full.tar.gz
+tar zxf lnmp-full.tar.gz
+git clone https://github.com/ylqjgm/LLNMP
+mv LLNMP/* lnmp/
+cd lnmp
+screen -S llnmp
+./install.sh
+```
 
-ä¸»é¡µ: [http://llnmp.com](http://llnmp.com)  
-åšå®¢: [http://shuang.ca](http://shuang.ca)
+lnmpÖ÷Ò³£º[http://blog.linuxeye.com](http://blog.linuxeye.com)
+llnmpÖ÷Ò³£º[http://www.lovekk.org/llnmp](http://www.lovekk.org/llnmp)
+¿µ¿µµÄ²©¿Í£º[http://www.lovekk.org](http://www.lovekk.org)
